@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Web-Entwicklung mit Node.js</title>
+
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../assets/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="../../assets/reveal.js/css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/reveal.js/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write('<link rel="stylesheet" href="../../assets/reveal.js/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="../../assets/reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+
+    <style type="text/css">
+        .reveal section .no-border {
+            background: transparent;
+            border: 0;
+            box-shadow: 0 0 0;
+        }
+        
+        .reveal h2 {
+            line-height: 1.2em;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="reveal">
+
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+<section>
+    <h2>Web-Entwicklung mit Node.js</h2>
+    <br>
+    <br>
+
+    <p>
+        Dienstags 15.40-17.10 Uhr <br>
+        im Raum J319 (vormals J301)
+    </p>
+    <br>
+    <br>
+
+    <p>
+        <small>Michael Jaser / Johannes Ewald <a href="https://peerigon.com">peerigon UG</a></small>
+    </p>
+    <p></p>
+</section>
+
+<section>
+    <section>
+        <h2>Organisatorisches</h2>
+    </section>
+
+    <section>
+        <ul>
+            <li>45 min Theorie / 45 min Praxis</li>
+            <li>3 kleine Einzel-Abgaben</li>
+            <li>1 Projekt im Team</li>
+            <li>Abgaben via GitHub (git)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Agenda</h2>
+        <ul>
+            <li>09.04. Einführung</li>
+            <li>16.04. Javascript WTF</li>
+            <li>23.04. Node.js Basics</li>
+            <li>30.04. Best Practices</li>
+            <li>07.05. Web-Hacking</li>
+            <li>14.05. Datenbanken</li>
+            <li>28.05. Test-Driven-Development</li>
+            <li>04.06. - 25.06. Projekt-Support</li>
+            <li>02.07. Projekt Vorstellung</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Abgaben</h4>
+        <ul>
+            <li>23.04. JavaScript</li>
+            <li>30.04. Node.js - Basics</li>
+            <li>14.05. Node.js - Best Practices</li>
+        </ul>
+    </section>
+
+    <section>
+        <h4>Projekt</h4>
+        <ul>
+            <li>3 - 5er Team</li>
+            <li>Thema frei wählbar nach Absprache</li>
+            <li>30.04. Einteilung</li>
+            <li>30.06. Abgabe</li>
+        </ul>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h2>Über uns</h2>
+    </section>
+    <section>
+        <img class="no-border" src="img/roomieplanet.png" style="width: 400px;"/>
+
+        <ul>
+            <li>Plattform zur WG-Verwaltung</li>
+            <li>Projektarbeit (2 Semester)</li>
+            <li>siebenköpfiges Team (WI/IAM)</li>
+            <li><a href="http://www.roomieplanet.com">roomieplanet.com</a></li>
+        </ul>
+    </section>
+
+    <section>
+        <img class="no-border" src="img/peerigon.png" style="width: 400px; margin: 0;"/><br>
+        <img class="no-border" src="img/peerigon_type.svg" style="width: 400px; margin: 0;"/>
+    </section>
+
+    <section>
+        <h2>Förderungen für Existenzgründer</h2>
+        <ul>
+            <li>Exist Stipendium</li>
+            <li>Flügge Stipendium</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Unsere Idee</h2>
+        
+        <img class="no-border" src="img/peerigon_usecase.png" style="width: 400px;">
+        <blockquote>
+            "Peerigon hilft dir und deinen Freunden, Freizeitprojekte gemeinsam auf die Beine zu stellen."
+        </blockquote>
+    </section>
+
+    <section>
+
+        <ul>
+            <li>Web- & Mobile-App</li>
+            <li>Datenschutz!</li>
+            <li>Werbefreiheit!</li>
+        </ul>
+
+        <br>
+        <br>
+
+        <p> Mehr dazu auf <a href="https://peerigon.com">peerigon.com</a></p>
+    </section>
+</section>
+
+<section id="nodejs">
+
+    <section>
+        <img src="img/nodejs.png" class="no-border"/>
+    </section>
+
+    <section>
+        <blockquote>
+            Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications.
+            Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient,
+            perfect for data-intensive real-time applications that run across distributed devices.. (http://nodejs.org)
+        </blockquote>
+    </section>
+
+    <section>
+        <ul>
+            <li>wurde 2009 veröffentlicht von Ryan Dahl</li>
+            <li>wird seit Januar 2012 betreut von Isaac Schlueter</li>
+            <li>basiert auf der V8-Engine von Google (Chrome)</li>
+            <li>ist Open-Source unter der MIT Lizenz</li>
+            <li>ist geschrieben in C++ und JavaScript</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Versionen & Bedeutung</h2>
+
+        <ul>
+            <li>aktuell ist 0.10.x </li>
+            <li>gerade Versionsnummer = stable Release</li>
+            <li>ungerade Versionsnummer = unstable Release </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Hello World</h2>
+        <ul>
+            <li>node startet die REPL (Read-Eval-Print-Loop)</li>
+            <li>node app.js führt die Datei aus</li>
+            <li>"Apps" laufen nur solange der Prozess läuft</li>
+        </ul>        
+        <br>
+        <br>
+<pre><code contenteditable>var http = require('http');
+
+http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Hello World\n');
+}).listen(1337, "127.0.0.1");
+
+console.log('Server running at http://127.0.0.1:1337/');</code></pre>
+    </section>
+
+    <section>
+        <h2>Module</h2>
+
+        <ul>
+            <li>Core-Module (fs, http, process, etc.)</li>
+            <li>Userland-Module (NPM)</li>
+            <li><code>npm install &lt;module&gt;</code></li>
+            <li>mehr zu NPM später...</li>
+        </ul>
+    </section>
+
+</section>
+
+<section>
+
+    <section>
+        <h1>Warum Node.js?</h1>
+        eine kleine Begriffsklärung
+    </section>
+
+    <section>
+        <h2>Asnychronous / Non-Blocking</h2>
+
+<pre><code contenteditable>// PHP
+print("Hello");
+sleep(5);
+print("World");
+print("Bye");
+</code></pre>
+
+<pre><code contenteditable>// NODE
+console.log("Hello");
+
+setTimeout(function() {
+    console.log("World");
+}, 5000);
+
+console.log("Bye");</code></pre>
+    </section>
+
+    <section>
+        <h2>Synchron</h2>
+    </section>
+
+    <section>
+
+        <h2>Asynchron</h2>
+
+        <aside class="notes">
+            <ul>
+                <li>setTimeout ist non blocking/async</li>
+                <li>node arbeitet parallel weiter (EventLoop)</li>
+                <lI>EventLoop = Endlosschleife mit EventListeners</lI>
+                <li>setTimeout registriert nur ein Event an der EventLoop</li>
+                <li>wenn setTimeout fertig ist, wird das callback ausgeführt</li>
+            </ul>
+        </aside>
+
+    </section>
+
+    <section>
+        <h2>Realtime</h2>
+    </section>
+
+    <section>
+        <h2>Websockets</h2>
+
+        <ul>
+            <li><a href="http://todomvc.peerigon.com" target="_blank">http://todomvc.peerigon.com</a></li>
+        </ul>
+    </section>
+
+    <section>Performance</section>
+
+    <section>
+        <ul>
+            <li>V8 Engine</li>
+            <li>Asynchronous</li>
+            <li>Non-Blocking IO </li>
+        </ul>
+
+        <aside class="notes">
+            <ul>
+                <li>Performance hauptsächlich durch Konzepte "EventDriven / Async"</li>
+            </ul>
+        </aside>
+    </section>
+
+    <section>
+        <h2>Code-Re-Use</h2>
+
+        <ul>
+            <li>Quelltext für Server UND Client</li>
+            <li style="margin-bottom: 1em";>"Bundler" machen Node-Code für den Browser ausführbar</li>
+            <li>Webpack <a href="https://github.com/webpack">https://github.com/webpack</a></li>
+            <li>Browserify <a href="http://browserify.org/">http://browserify.org/</a></li>
+        </ul>
+    </section>
+</section>
+
+<section>
+    <h2>Euer Setup</h2>
+    
+    <ul>
+        <li>Node läuft auf eurem Rechner</li>
+        <li>Git ist auf eurem Rechner installiert</li>
+        <li>Ihr habt einen GitHub-Account (optional)</li>
+        <li>Hello-World-Beispiel in einem lokalen Repository</li>
+        <li>Hello-World-Beispiel auf GitHub (Open Source)</li>
+    </ul>
+</section>
+
+<section>
+    <section>
+        <h2>Node.js Setup</h2>
+    </section>
+
+    <section>
+
+        <h2>Installation</h2>
+
+        <ul>
+            <li><a href="http://nodejs.org/download/">http://nodejs.org/download/</a></li>
+            <li>Binaries für Win/OSX</li>
+            <li>Linux via Paketmanager oder kompilieren</li>
+            <li>Test mit node -v</li>
+        </ul>
+
+    </section>
+</section>
+
+<section>
+
+    <section>
+        <h2> git-Setup</h2>
+    </section>
+
+    <section>
+        <h2>Was ist git?</h2>
+
+        <img class="no-border" src="img/git.png" style="width: 300px;">
+
+        <blockquote>
+            Git ([ɡɪt], engl. Blödmann) ist eine freie Software zur verteilten Versionsverwaltung von Dateien,
+            die ursprünglich für die Quellcode-Verwaltung des Linux-Kernels entwickelt wurde. (http://de.wikipedia.org/wiki/Git)
+        </blockquote>
+        <br>
+        <p>Mehr Infos gibts unter <a href="http://git-scm.com/">http://git-scm.com/</a></p>
+    </section>
+
+    <section>
+        <h2>Warum git?</h2>
+
+        <ul>
+            <li>weit verbreitet (siehe GitHub)</li>
+            <li>flexibel</li>
+            <li>dezentral</li>
+            <li>de-facto Standard in der Node-Community</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Installation</h2>
+
+        <ul>
+            <li><a href="https://help.github.com/articles/set-up-git">https://help.github.com/articles/set-up-git</a></li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Git-Basics</h2>
+    </section>
+
+    <section>
+        <h2>Repository erstellen</h2>
+
+        <ul>
+            <li><a href="https://help.github.com/articles/create-a-repo">https://help.github.com/articles/create-a-repo</a></li>
+        </ul>
+
+<pre><code contenteditable>mkdir ~/Hello-World
+cd ~/Hello-World
+
+git init
+# Sets up the necessary Git files
+# Initialized empty Git repository in /Users/you/Hello-World/.git/</code></pre>
+    </section>
+
+    <section>
+        <h2>Commit</h2>
+
+<pre><code contenteditable>touch README
+# Creates a file called "README" in your Hello-World directory
+
+git add README
+# Stages your README file, adding it to the list of files to be committed
+
+git commit -m 'first commit'
+# Commits your files, adding the message "first commit"</code></pre>
+    </section>
+
+    <section>
+        <h2>Push/Pull</h2>
+
+<pre><code contenteditable>git remote add origin https://github.com/username/Hello-World.git
+# Creates a remote named "origin" pointing at your GitHub repository
+
+git push origin master
+# Sends your commits in the "master" branch to GitHub
+
+git pull origin master
+# Loads latest version from master (like svn: update)</code></pre>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h2>GitHub-Setup</h2>
+    </section>
+
+    <section>
+        <h2>GitHub-Account</h2>
+
+            <ul>
+                <li><a href="http://github.com">https://github.com</a></li>
+                <li>kostenlos für offene Repositories</li>
+                <li>für Studenten auch private Repositories kostenlos</li>
+                <li><a href="https://github.com/edu">https://github.com/edu</a></li>
+            </ul>
+
+        </section>
+
+        <section>
+            <h2>SSH-keys</h2>
+            <a href="https://help.github.com/articles/generating-ssh-keys">https://help.github.com/articles/generating-ssh-keys</a>
+        </section>
+
+    </section>
+</section>
+
+
+
+
+
+</section>
+
+<section>
+<h2>IDE?</h2>
+
+<ul>
+    <li>wir nutzen Webstorm <a href="http://www.jetbrains.com/webstorm/">http://www.jetbrains.com/webstorm/</a></li>
+    <li>Web & Node.js IDE von IntelliJ</li>
+    <li>30-tägige Test-Version</li>
+    <li>Lizenzen über die Hochschule</li>
+    <li>gern auch andere IDEs :)</li>
+</ul>
+</section>
+
+<section>
+
+<section>
+    <h2>Was kann Node.js noch?</h2>
+</section>
+
+<section>
+    <h2>Node Synth</h2>
+</section>
+
+<section>
+    <h2>NodeCopter?</h2>
+</section>
+</section>
+
+</div>
+</div>
+
+<script src="../../assets/reveal.js/lib/js/head.min.js"></script>
+<script src="../../assets/reveal.js/js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls : true,
+        progress : true,
+        history : true,
+        center : true,
+
+        theme : Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition : Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies : [
+            { src : '../../assets/reveal.js/lib/js/classList.js', condition : function () {
+                return !document.body.classList;
+            } },
+            { src : '../../assets/reveal.js/plugin/markdown/showdown.js', condition : function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src : '../../assets/reveal.js/plugin/markdown/markdown.js', condition : function () {
+                return !!document.querySelector('[data-markdown]');
+            } },
+            { src : '../../assets/reveal.js/plugin/highlight/highlight.js', async : true, callback : function () {
+                hljs.initHighlightingOnLoad();
+            } },
+            { src : '../../assets/reveal.js/plugin/zoom-js/zoom.js', async : true, condition : function () {
+                return !!document.body.classList;
+            } },
+            { src : '../../assets/reveal.js/plugin/notes/notes.js', async : true, condition : function () {
+                return !!document.body.classList;
+            } }
+            // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+    });
+
+</script>
+
+</body>
+</html>
