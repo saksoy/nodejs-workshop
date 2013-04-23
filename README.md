@@ -9,6 +9,7 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 
 - [Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung)
 - [Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf)
+- [Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics)
 
 ## Aufgaben
 
