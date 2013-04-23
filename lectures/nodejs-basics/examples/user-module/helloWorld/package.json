@@ -1,0 +1,18 @@
+{
+  "name": "helloWorld",
+  "version": "0.0.1",
+  "description": "example module",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./test"
+  },
+  "dependencies" : {
+      "underscore" : "*"
+  },
+  "devDependencies" : {
+       "mocha" : "*"
+  },
+  "repository": "",
+  "author": "meaku",
+  "license": "MIT"
+}
