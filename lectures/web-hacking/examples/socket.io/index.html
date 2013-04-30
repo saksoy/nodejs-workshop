@@ -1,0 +1,19 @@
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script>
+
+    var socket = io.connect('http://localhost:3000');
+
+    function growlBack(socket) {
+        //wir emitten an den server
+        socket.emit('growlBack', { name : "kingokongo", growl : "UGA-UGA!" });
+    }
+
+    //wir hören auf "growl" events vom server
+    socket.on('growl', function (data) {
+
+        alert(data.name + " growled from the server: " + data.growl);
+
+        //nach 3 Sekunden brüllen wir zurück!
+        setTimeout(growlBack(socket), 3000);
+    });
+</script>

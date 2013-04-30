@@ -399,6 +399,7 @@ namesStream.on("error", function(e) {
     var names = fs.createReadStream(file, { encoding : "utf-8" });
 
     names.on("readable", function() {
+        //res = writeable stream
         res.write(names.read());
     });
 
