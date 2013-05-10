@@ -7,11 +7,21 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 
 ## Skripte
 
-- [Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
-- [Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf/)
-- [Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics/)
-- [Web-Hacking](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/web-hacking/)
+- [09.04. Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
+- [16.04. Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf/)
+- [23.04. Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics/)
+- [30.04. Web-Hacking](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/web-hacking/)
+- 07.05. Projekt Einteilung
+- 14.05. Datenbanken
+- 28.05. Best Practices
+- 04.06 Debugging
+- 11.06 Test-Driven Development
 
 ## Aufgaben
 
 - [Aufgaben](https://github.com/hsa-nodejs-workshop/aufgaben)
+
+
+## Projekte
+
+- [Projekte](https://github.com/hsa-nodejs-workshop/Projekte)
