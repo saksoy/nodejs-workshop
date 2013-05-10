@@ -5,17 +5,21 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 - Dienstags 15.40-17.10 Uhr 
 - Raum J319 (vormals J301)
 
-## Skripte
+## Agenda
 
 - [09.04. Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
 - [16.04. Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf/)
 - [23.04. Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics/)
 - [30.04. Web-Hacking](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/web-hacking/)
-- 07.05. Projekt Einteilung
+- 07.05. __Projekt Einteilung__
 - 14.05. Datenbanken
 - 28.05. Best Practices
-- 04.06 Debugging
-- 11.06 Test-Driven Development
+- 04.06. Debugging
+- 11.06. Test-Driven Development 
+- 18.06. _Projekt-Support_
+- 25.06. _Projekt-Support_
+- 02.07. __Projekt-Abgabe__
+- 09.07. __Projekt-Kurzpräsentation__
 
 ## Aufgaben
 
