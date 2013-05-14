@@ -1,0 +1,10 @@
+{
+  "name": "mongoose-example",
+  "version": "0.0.1",
+  "main": "blog.js",
+  "dependencies": {
+    "mongoose": "~3.6.10"
+  },
+  "author": "meaku",
+  "license": "MIT"
+}
