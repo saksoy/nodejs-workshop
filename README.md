@@ -13,7 +13,7 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 - [30.04. Web-Hacking](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/web-hacking/)
 - 07.05. __Projekt Einteilung__
 - 14.05. [Datenbanken](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/datenbanken/)
-- 28.05. Best Practices
+- 28.05. [Best Practice]((http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/best-practice/)
 - 04.06. Debugging
 - 11.06. Test-Driven Development 
 - 18.06. _Projekt-Support_
