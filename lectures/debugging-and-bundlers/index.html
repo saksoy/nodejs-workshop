@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Webentwicklung mit node.js - Debugging und Bundlers</title>
+
+    <meta name="author" content="peerigon">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../assets/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="../../assets/reveal.js/css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/reveal.js/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write( '<link rel="stylesheet" href="../../assets/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <style type="text/css">
+        .reveal section .no-border {
+            background: transparent;
+            border: 0;
+            box-shadow: 0 0 0;
+        }
+
+        .reveal h2 {
+            line-height: 1.2em;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-rendering: optimizeLegibility;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="../../assets/reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <small style="padding: 10px;">
+        Webentwicklung mit node.js<br/>
+        HS Augsburg
+    </small>
+
+    <small style="padding: 10px; float: right; text-align: right;">
+        Debugging und Bundlers<br/>04.06.2013
+    </small>
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+        <section>
+            <h2>Debugging</h2>
+        </section>
+
+        <section>
+
+            <section>
+                <h2>Node.js Debugger</h2>
+            </section>
+
+            <section>
+                <h2>Node.js Debugger</h2>
+<br>
+<pre><code>>node debug app.js</code></pre>
+<br>
+                <ul>
+                    <li>integriert in node</li>
+                    <li>interaktive Shell</li>
+                </ul>
+            </section>
+
+            <section>
+                <img src="./img/manual_1.png">
+            </section>
+
+            <section>
+                <img src="./img/manual_2.png">
+            </section>
+
+            <section>
+                <h2>Stepping</h2>
+
+                <ul>
+                    <li class="fragment"><strong>cont, c </strong>- Continue execution</li>
+                    <li class="fragment"><strong>next, n </strong>- Step next: bleibt im selben Scope (springt in keine Funktion rein)</li>
+                    <li class="fragment"><strong>step, s </strong>- Step in: springt in jede Funktion rein</li>
+                    <li class="fragment"><strong>out, o </strong>- Step out: springt aus der aktuellen Funktion raus (nächstes return oder throw)</li>
+                    <li class="fragment"><strong>pause </strong>- Pause running code (like pause button in Developer Tools)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Breakpoints</h2>
+
+                <ul>
+                    <li><strong>setBreakpoint</strong></li>
+                    <li><strong>clearBreakpoint</strong></li>
+                </ul>
+
+            </section>
+
+            <section>
+                <h2>Info</h2>
+
+                <ul>
+                    <li class="fragment"><strong>backtrace, bt</strong> - Print backtrace of current execution frame</li>
+                    <li class="fragment"><strong>list(5)</strong> - List scripts source code with 5 line context (5 lines before and after)</li>
+                    <li class="fragment"><strong>watch(expr)</strong> - Add expression to watch list</li>
+                    <li class="fragment"><strong>unwatch(expr)</strong> - Remove expression from watch list</li>
+                    <li class="fragment"><strong>watchers</strong> - List all watchers and their values (automatically listed on each breakpoint)</li>
+                    <li class="fragment"><strong>repl</strong> - Open debugger's repl for evaluation in debugging script's context</li>
+                </ul>
+
+            </section>
+
+            <section>
+                <h2>RTFM</h2>
+                <a href="http://nodejs.org/api/debugger.html">http://nodejs.org/api/debugger.html</a>
+            </section>
+        </section>
+
+        <section>
+
+            <section>
+                <h2>Webstorm Debugging</h2>
+            </section>
+
+            <section>
+                <h2>Breakpoints</h2>
+                <img src="img/breakpoints.png">
+            </section>
+
+            <section>
+                <h2>Debugger konfigurieren</h2>
+                <img src="img/debugger-bar.png">
+            </section>
+
+            <section>
+                <h2>Debugger</h2>
+                <img src="img/debugger-view.png">
+            </section>
+
+            <section>
+                <h2>Local Debugging</h2>
+                <img src="img/local_debug.png">
+            </section>
+
+            <section>
+                <h2>Remote Debugging</h2>
+                <img src="img/remote_debug.png">
+            </section>
+
+            <section>
+                <h2>Remote Debugging</h2>
+<pre><code>> node --debug app.js
+debugger listening on port 5858
+Server running at http://127.0.0.1:1337</code></pre>
+
+                <br>
+
+                <ul>
+                    <li>Webstorm Debugger starten</li>
+                    <li>Node-Prozess starten</li>
+                    <li><code>node --debug-brk app.js</code> (hält in erster Zeile)</li>
+                    <li><code>node --debug</code> (hält erst bei Breakpoint)</li>
+                    <li><code>--debug, --debug-brk</code> muss direkt nach node stehen</li>
+                </ul>
+            </section>
+
+        </section>
+
+        <section>
+            <section>
+                <h2>Client-side Bundlers</h2>
+                <p>
+                    Bundler. It is better for you to not know what it is.
+                </p>
+            </section>
+
+            <section>
+<pre><code>// a.js
+var b = require("./b");
+b.stuff("It works");</code></pre>
+<pre><code>// b.js
+exports.stuff = function(text) {
+    console.log(text);
+}</code></pre>
+
+                <div class="fragment">
+                    <p style="text-align: center;">
+                        ... wird zu ...
+                    </p>
+<pre><code>// bundle.js
+({
+"./a.js": function(module, exports, require) {
+    var b = require("./b.js");
+    b.stuff("It works");
+},
+"./b.js": function(module, exports, require) {
+    exports.stuff = function(text) {
+    console.log(text)
+}})</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h3>Limitierungen</h3>
+                <ul>
+                    <li class="fragment">Keine C-Libs</li>
+                    <li class="fragment">Keine Betriebssystem-spezifischen Module (z.B. <code>fs</code>)</li>
+                    <li class="fragment">Kein dynamisches <code>require()</code>
+<pre><code>var modulePath = "path/to/module.js";
+
+require(modulePath);</code></pre>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Bundlers</h3>
+                <p>
+                    <a href="https://github.com/substack/node-browserify">
+                        <img src="img/browserify_logo.png" class="no-border" style="width: 400px;">
+                    </a>
+                    <a href="https://github.com/webpack/webpack">
+                        <img src="img/webpack_logo.png" class="no-border" style="width: 400px;">
+                    </a>
+                    <a href="https://github.com/medikoo/modules-webmake">webmake</a>
+                </p>
+            </section>
+
+        </section>
+
+
+    </div>
+
+</div>
+
+<script src="../../assets/reveal.js/lib/js/head.min.js"></script>
+<script src="../../assets/reveal.js/js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            { src: '../../assets/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            { src: '../../assets/reveal.js/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../assets/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../assets/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            { src: '../../assets/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+            { src: '../../assets/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+            // { src: '../../assets/reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+            // { src: '../../assets/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "bundlers",
+  "version": "0.0.1",
+  "description": "simple demo",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "connect": "~2.7.11"
+  }
+}
