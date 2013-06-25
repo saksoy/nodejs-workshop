@@ -19,7 +19,7 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 - 18.06. _Projekt-Support_
 - 25.06. _Projekt-Support_
 - 02.07. __Projekt:__ [Abgabe](https://github.com/hsa-nodejs-workshop/Projekte#abgabe)
-- 09.07. __Projekt:__ [Kurzpräsentation](https://github.com/hsa-nodejs-workshop/Projekte/blob/master/README.md#kurzprsentation)
+- 09.07. __Projekt:__ [Kurzpräsentation](https://github.com/hsa-nodejs-workshop/Projekte/#kurzprsentation)
 
 ## Aufgaben
 
