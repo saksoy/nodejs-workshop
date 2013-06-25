@@ -11,15 +11,15 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 - [16.04. Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf/)
 - [23.04. Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics/)
 - [30.04. Web-Hacking](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/web-hacking/)
-- 07.05. __Projekt Einteilung__
+- 07.05. __Projekt:__ [Einteilung](https://github.com/hsa-nodejs-workshop/Projekte)
 - 14.05. [Datenbanken](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/datenbanken/)
 - 28.05. [Best Practice](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/best-practice/)
 - 04.06. [Debugging/Bundlers](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/debugging-and-bundlers/)
 - 11.06. [Test-Driven Development](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/tdd/)
 - 18.06. _Projekt-Support_
 - 25.06. _Projekt-Support_
-- 02.07. __Projekt-Abgabe__
-- 09.07. [Projekt-Kurzpräsentation](https://github.com/hsa-nodejs-workshop/nodejs-workshop/wiki/Projekt-pr%C3%A4sentation)
+- 02.07. __Projekt:__ [Abgabe](https://github.com/hsa-nodejs-workshop/Projekte)
+- 09.07. __Projekt:__ [Kurzpräsentation](https://github.com/hsa-nodejs-workshop/Projekte)
 
 ## Aufgaben
 
