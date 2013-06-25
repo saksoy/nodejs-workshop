@@ -18,7 +18,7 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 - 11.06. [Test-Driven Development](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/tdd/)
 - 18.06. _Projekt-Support_
 - 25.06. _Projekt-Support_
-- 02.07. __Projekt:__ [Abgabe](https://github.com/hsa-nodejs-workshop/Projekte#abgabe)
+- 02.07. __Projekt:__ [Abgabe](https://github.com/hsa-nodejs-workshop/Projekte#abgabe) (keine Vorlesung/Besprechung)
 - 09.07. __Projekt:__ [Kurzpräsentation](https://github.com/hsa-nodejs-workshop/Projekte/#kurzprsentation)
 
 ## Aufgaben
