@@ -1,6 +1,6 @@
 # Web-Entwicklung mit Node.js
 
-Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-augsburg.de/fakultaet/informatik/studium/wahlpflichtveranstaltung/web_entwicklung/index.html) an der Hochschule Augsburg.
+Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-augsburg.de/fakultaet/informatik/studium/wahlpflichtveranstaltung/web_entwicklung_node_js/index.html an der Hochschule Augsburg.
 
 - Mittwochs 14.00 - 17.10 Uhr
 - Raum W 3.01
