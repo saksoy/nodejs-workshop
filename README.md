@@ -2,24 +2,25 @@
 
 Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-augsburg.de/fakultaet/informatik/studium/wahlpflichtveranstaltung/web_entwicklung/index.html) an der Hochschule Augsburg. 
 
-- Dienstags 15.40-17.10 Uhr 
-- Raum J319 (vormals J301)
+- Mittwochs 14.00 - 17.10 Uhr 
+- Raum W 3.01
 
 ## Agenda
 
-- [09.04. Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
-- [16.04. Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf/)
-- [23.04. Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics/)
-- [30.04. Web-Hacking](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/web-hacking/)
-- 07.05. __Projekt Einteilung__
-- 14.05. [Datenbanken](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/datenbanken/)
-- 28.05. [Best Practice](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/best-practice/)
-- 04.06. [Debugging/Bundlers](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/debugging-and-bundlers/)
-- 11.06. [Test-Driven Development](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/tdd/)
-- 18.06. _Projekt-Support_
-- 25.06. _Projekt-Support_
-- 02.07. __Projekt-Abgabe__
-- 09.07. __Projekt-Kurzpräsentation__
+- 09.10. [Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
+- 16.10. Javascript WTF
+- 23.10. Node.js Basics
+- 30.10. Web-Hacking
+- 06.11. __Projekt Einteilung__
+- 13.11. Datenbanken (MongoDB, LevelDB)
+- 20.11. Error-Handling / Flow-Control
+- 27.11. Best-Practice
+- 04.12. Test-Driven-Development
+- 11.12. _Projekt-Support_
+- 18.12. _Projekt-Support_
+- 08.01. __Projekt-Abgabe__
+- 15.01. __Projekt-Kurzpräsentation__
+- 22.01. frei! yeeha!
 
 ## Aufgaben
 
