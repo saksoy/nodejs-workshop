@@ -1,5 +1,3 @@
-//view-source:http://augsburg.my-mensa.de/essen.php?v=4555387&mensa=aug_friedbergerstr_fh&hyp=1#aug_friedbergerstr_fh_tag_2013111
-
 var http = require('follow-redirects').http,
     fs = require("fs"),
     jsdom = require("jsdom"),
@@ -7,12 +5,12 @@ var http = require('follow-redirects').http,
 
 function mensa(callback) {
 
-    var aufgabenUrl = "http://augsburg.my-mensa.de/essen.php?mensa=aug_friedbergerstr_fh&hyp=1";
+    var mensaUrl = "http://augsburg.my-mensa.de/essen.php?mensa=aug_friedbergerstr_fh&hyp=1";
 
-    http.get(aufgabenUrl, function(res) {
+    http.get(mensaUrl, function(res) {
 
         if(res.statusCode !== 200) {
-            callback(new Error("Could not load page '" + aufgabenUrl + "' StatusCode "+ res.statusCode));
+            callback(new Error("Could not load page '" + mensaUrl + "' StatusCode "+ res.statusCode));
             return;
         }
 
@@ -38,11 +36,8 @@ function mensa(callback) {
 
                     callback(null, meals);
                 });
-
         });
-    }).on('error', function(e) {
-            callback(e);
-        });
+    }).on('error', callback);
 }
 
 module.exports = mensa;

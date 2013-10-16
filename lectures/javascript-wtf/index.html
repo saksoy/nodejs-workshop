@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>Webentwicklung mit node.js - JavaScript WTF</title>
+
+        <meta name="author" content="peerigon">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="../../assets/reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../../assets/reveal.js/css/theme/sky.css" id="theme">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="../../assets/reveal.js/lib/css/zenburn.css">
+
+        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="../../assets/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+        
+        <style type="text/css">
+            .reveal section .no-border {
+                background: transparent;
+                border: 0;
+                box-shadow: 0 0 0;
+            }
+
+            .reveal h2 {
+                line-height: 1.2em;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                text-rendering: optimizeLegibility;
+            }
+        </style>
+
+        <!--[if lt IE 9]>
+        <script src="../../assets/reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <small style="padding: 10px;">
+                Webentwicklung mit node.js<br/>
+                HS Augsburg
+            </small>
+
+            <small style="padding: 10px; float: right; text-align: right;">
+                JavaScript WTF<br/>16.10.2013
+            </small>
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+                <section>
+                    <section>
+                        <h1>JavaScript WTF</h1>
+                        <img src="img/the-good.jpg">
+                    </section>
+                    <section>
+                        <h2>Die gute Nachricht:<br>JavaScript ist leicht zu lernen.</h2>
+                    </section>
+                    <section>
+                        <h2>Die schlechte Nachricht:<br>JavaScript ist schwer zu verstehen.</h2>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Kleiner Rückblick</h2>
+                        <img src="img/yahoo-1995.jpg">
+                    </section>
+                    <section>
+                        <ul>
+                            <li>wurde 1995 unter dem Namen LiveScript von Netscape entwickelt</li>
+                            <li class="fragment">bald darauf aus Marketinggründen in JavaScript umbenannt</li>
+                            <li class="fragment">1996 von Microsoft unter dem Namen JScript adoptiert</li>
+                            <li class="fragment">wird seit Ende 1996 unter dem Namen <a href="http://es5.github.io/" target="_blank">ECMAScript</a> standardisiert</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>JavaScript ist einfach, weil...</h2>
+                        <ul>
+                            <li class="fragment">vertraute, Java-ähnliche Syntax</li>
+                            <li class="fragment">funktioniert out-of-the-box</li>
+                            <li class="fragment">copy & paste</li>
+                            <li class="fragment">dynamische Typisierung</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>JavaScript ist schwer, weil...</h2>
+                        <ul>
+                            <li class="fragment">inkonsistente Typen</li>
+                            <li class="fragment">unintuitive Prototypen-Vererbung</li>
+                            <li class="fragment">inkompatible APIs (DOM)</li>
+                            <li class="fragment">verbuggte Implementierungen</li>
+                        </ul>
+                    </section>
+                </section>
+                
+                <section>
+                    <section>
+                        <h2>Environment</h2>
+                        <img src="img/environment.svg" class="no-border">
+                    </section>
+                </section>
+                
+                <section>
+                    <section>
+                        <h2>Syntax</h2>
+                        <small>
+                            <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference" target="_blank">https://developer.mozilla.org/en-US/docs/JavaScript/Reference</a>
+                        </small>
+                    </section>
+                    <section>
+                        <h3>Whitespace</h3>
+                        <ul>
+                            <li>hat keine spezielle Bedeutung</li>
+                            <li>an manchen Stellen erforderlich (z.B. nach <code>var</code> statement)</li>
+                            <li>Kommentare mit <code>//</code> oder <code>/* */</code> möglich</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Reserved Words</h3>
+                        <p>
+                            <code>
+                                break
+                                case
+                                catch
+                                continue
+                                debugger
+                                default
+                                delete
+                                do
+                                else
+                                finally
+                                for
+                                function
+                                if
+                                in
+                                instanceof
+                                new
+                                return
+                                switch
+                                this
+                                throw
+                                try
+                                typeof
+                                var
+                                void
+                                while
+                                with
+                                class
+                                enum
+                                export
+                                extends
+                                import
+                                super
+                                implements
+                                interface
+                                let
+                                package
+                                private
+                                protected
+                                public
+                                static
+                                yield
+                                null
+                                true
+                                false
+                            </code>
+                        </p>
+                        <small>
+                            <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Reserved_Words" target="_blank">https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Reserved_Words</a>
+                        </small>
+
+                    </section>
+                    <section>
+                        <h3>Statements</h3>
+                        <code>var</code>
+<pre><code contenteditable>var myVariable1;
+var myVariable2;
+var otherVar1, otherVar2, otherVar3;</code></pre>
+                        <p>
+                            Hoisting <em>(engl: "hochziehen")</em> beachten!
+                        </p>
+                    </section>
+                    <section>
+                        <code>if</code>
+<pre><code contenteditable>if (myNumber === 1) {
+    ...
+} else if (myNumber === 2) {
+    ...
+} else {
+    ...
+}</code></pre>
+                    </section>
+                    <section>
+                        <code>switch/case/break/default</code>
+<pre><code contenteditable>switch (myNumber) {
+    case 1:
+        ...
+        break;
+    case 2:
+        ...
+        break;
+    default:
+        ...
+}</code></pre>
+                    </section>
+                    <section>
+                        <code>do/while</code>
+<pre><code contenteditable>while (myNumber < 1) {
+    ...
+}</code></pre>
+<pre><code contenteditable>do {
+    ...
+} while (myNumber < 1)</code></pre>
+                    </section>
+                    <section>
+                        <code>for</code>
+<pre><code contenteditable>for (i = 0; i < myArr.length; i++) {
+    ...
+}</code></pre>
+                        <code>for ... in</code><br>
+                        <small>(nur auf Objekte)</small>
+<pre><code contenteditable>for (key in myObj) {
+    ...
+}</code></pre>
+                    </section>
+                    <section>
+                        <code>continue/break</code>
+<pre><code contenteditable>while (myNumber < 1) {
+    continue;
+}</code></pre>
+<pre><code contenteditable>while (myNumber < 1) {
+    break;
+}</code></pre>
+                    </section>
+                    <section>
+                        <code>throw/try/catch/finally</code>
+<pre><code contenteditable>try {
+    ...
+} catch (err) {
+    ...
+} finally {
+    ...
+}</code></pre>
+                    </section>
+                    <section>
+                        <p>
+                            Hinweis: Terminierung mit <code>;</code> optional, aber dringend empfohlen
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Operatoren</h3>
+                        <h4>Arithmetic</h4>
+                        <code>+ - * / % ++ --</code>
+                    </section>
+                    <section>
+                        <h4>Assignment</h4>
+                        <code>= += -= *= /= %=</code>
+                    </section>
+                    <section>
+                        <h4>Comparison</h4>
+                        <code>== != === !== > >= < <=</code>
+                    </section>
+                    <section>
+                        <h4>Logical</h4>
+                        <code>&& || !</code>
+                    </section>
+                    <section>
+                        <h4>Strings</h4>
+                        <code>+ +=</code>
+                    </section>
+                    <section>
+                        <h4>Special</h4>
+                        <code>delete new typeof instanceof</code>
+                    </section>
+                    <section>
+                        <h3>Properties</h3>
+<pre><code contenteditable>> myObj.someProp
+"hello"
+
+> myObj["someProp"]
+"hello"
+
+> var key = "someProp";
+> myObj[key];
+"hello"</code></pre>
+                        <p>
+                            Auf jedes Property kann statisch (mit <code>.</code>) und dynamisch (mit <code>[]</code>)
+                            zugegriffen werden, wobei dynamisch deutlich langsamer ist.
+                        </p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Typen</h2>
+                        <img src="img/the-bad.jpg">
+                    </section>
+                    <section>
+                        <h3>Null values</h3>
+                        <code>undefined</code>
+<pre class="fragment"><code contenteditable>> typeof a
+"undefined"</code></pre>
+<pre class="fragment"><code contenteditable>> var a;
+> typeof a
+"undefined"</code></pre>
+<pre class="fragment"><code contenteditable>> var a = undefined;
+> typeof a
+"undefined"</code></pre>
+                    </section>
+                    <section>
+<pre><code contenteditable>> typeof module.a;
+"undefined"
+</code></pre>
+<pre class="fragment"><code contenteditable>> module.a = true;
+> module.b = true;
+
+> module.a = undefined;
+> delete module.b;
+
+> typeof module.a
+"undefined"
+> typeof module.b
+"undefined"
+> module.hasOwnProperty("a")
+true
+> module.hasOwnProperty("b")
+false</code></pre>
+                    </section>
+                    <section>
+                        <code>null</code>
+<pre class="fragment"><code contenteditable>> var a = null;
+> typeof a
+"object"</code></pre>
+                    </section>
+                    <section>
+                        <h3>Zusammenfassung</h3>
+                        <ul>
+                            <li>Variablen und Properties sind standardmäßig <code>undefined</code></li>
+                            <li class="fragment"><code>typeof null</code> gibt <code>"object"</code> zurück</li>
+                            <li class="fragment">Properties können explizit auf <code>undefined</code> gesetzt werden (werden dadurch aber nicht vollständig entfernt)</li>
+                            <li class="fragment"><code>delete</code> entfernt Properties entgültig</li>
+                            <li class="fragment">Variablen können mit <code>delete</code> nicht entfernt werden (entfernen der Referenz mit <code>null</code> oder <code>undefined</code>)</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Primitives</h3>
+                        <code>Boolean Number String</code>
+<pre class="fragment"><code contenteditable>var a = true;
+
+var b = 3;
+b = 0.3 = .3;
+b = 3e4; // 30000;
+
+var c = "hello" = 'hello';</code></pre>
+                    </section>
+                    <section>
+<pre><code contenteditable>> var a = 3;
+> var b = new Number(3);
+
+> a + b
+6</code></pre>
+<pre class="fragment"><code contenteditable>> typeof a
+"number"
+> typeof b
+"object"
+
+> a instanceof Number
+false
+> b instanceof Number
+true
+
+> a == b
+true
+> a === b
+false</code></pre>
+                    </section>
+                    <section>
+                        <h3>Zusammenfassung</h3>
+                        <ul>
+                            <li>nur mit Literale instanziieren (z.B. <code>true 3 "hello"</code>)</li>
+                            <li class="fragment">und anschließend nur mit <code>typeof</code> überprüfen</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Complex types</h3>
+                        <code>Array</code>
+<pre class="fragment"><code contenteditable>> var arr1 = [1, 2, 3];
+> typeof arr1
+"object"</code></pre>
+<pre class="fragment"><code contenteditable>> var arr2 = new Array(100);
+> typeof arr2
+"object"</code></pre>
+<pre class="fragment"><code contenteditable>> arr1 instanceof Array
+true
+> arr2 instanceof Array
+true</code></pre>
+                    </section>
+                    <section>
+                        <code>Object</code>
+<pre><code contenteditable>> var obj1 = {
+    prop1: 1,
+    prop2: "hello"
+};
+> typeof obj1
+"object"
+
+> var obj2 = new Object();
+> typeof obj2
+"object"</code></pre>
+                    </section>
+                    <section>
+                        <code>Function</code>
+<pre><code contenteditable>> typeof function () {}
+"function"
+> function () {} instanceof Function
+true</code></pre>
+                    </section>
+                    <section>
+                        <code>RegExp, Date, ...</code>
+<pre><code contenteditable>> typeof /abc/gi
+"object"
+> /abc/gi instanceof RegExp
+true
+
+> typeof new Date()
+"object"
+> new Date() instanceof Date
+true</code></pre>
+                    </section>
+                    <section>
+                        <h3>Eine Sache noch:</h3>
+<pre><code contenteditable>> [] instanceof Object
+true
+> /abc/gi instanceof Object
+true
+> function () {} instanceof Object
+true
+> {} instanceof Object
+true</code></pre>
+<pre class="fragment"><code contenteditable>> [].constructor === Object
+false
+> /abc/gi.constructor === Object
+false
+> function () {}.constructor === Object
+false
+> {}.constructor === Object
+true</code></pre>
+                    </section>
+                    <section>
+                        <h3>Zusammenfassung</h3>
+                        <ul>
+                            <li>auch hier sind Literale die bevorzugte Schreibweise</li>
+                            <li class="fragment">bei komplexen Typen funktioniert in der Regel der <code>instanceof</code>-Operator<br>
+                                <small>
+                                    Keine Regel ohne Ausnahme: http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
+                                </small>
+                            </li>
+                            <li class="fragment">aber: alle komplexen Typen sind <code>instanceof Object</code></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Copy by value</h3>
+                        <p>
+                            <code>undefined null boolean number string</code> sind "copy by value"
+                        </p>
+<pre class="fragment"><code contenteditable>> var a = 1;
+> var b = a;
+
+> a = 1000;
+
+> b
+1</code></pre>
+                    </section>
+                    <section>
+                        <h3>Copy by reference</h3>
+                        <p>
+                            <code>Array Object Function Date RegExp ...</code> sind "copy by reference"
+                        </p>
+<pre class="fragment"><code contenteditable>> var obj1 = {};
+> var obj2 = obj1;
+
+> obj1.hallo = "hallo";
+> obj2.hallo
+"hallo"
+
+> obj2 = {};
+> obj2.hallo = "ola";
+> obj1.hallo
+"hallo"</code></pre>
+                    </section>
+                    <section>
+                        <h3>Implizites casting</h3>
+<pre class="fragment"><code contenteditable>> "JavaScript ist " + 18 + " Jahre alt"
+"JavaScript ist 18 Jahre alt"</code></pre>
+
+<pre class="fragment"><code contenteditable>> 3 + "3"
+"33"</code></pre>
+
+<pre class="fragment"><code contenteditable>> 3 + Number("3")
+6
+
+> 3 + parseInt("3")
+6</code></pre>
+                    </section>
+                    <section>
+<pre><code contenteditable>> 3 == "3"
+true</code></pre>
+
+<pre class="fragment"><code contenteditable>> 3 === "3"
+false</code></pre>
+
+<pre class="fragment"><code contenteditable>> Boolean(undefined)
+false
+> Boolean(null)
+false
+> Boolean("")
+false
+> Boolean(0)
+false</code></pre>
+<pre class="fragment"><code contenteditable>> var someString = "";
+
+if (someString) {
+    // wird nie ausgeführt
+}</code></pre>
+                    </section>
+                    <section>
+                        <h3>Strategien</h3>
+                        <ul>
+                            <li class="fragment">immer Literale verwenden</li>
+                            <li class="fragment">bei primitiven Typen mit <code>typeof</code> checken</li>
+                            <li class="fragment">bei komplexen Typen mit <code>instanceof</code> (Ausnahme beachten)</li>
+                            <li class="fragment">immer mit den Strict-Equality-Operatoren überprüfen (<code>=== !==</code>)</li>
+                            <li class="fragment">jedoch generell: unnötige Typechecks vermeiden</li>
+                        </ul>
+                    </section>
+                    <section>
+<pre><code contenteditable>> typeof NaN</code></pre>
+<pre class="fragment"><code contenteditable>"number"</code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Funktionen</h2>
+                        <img src="img/the-good-2.jpg">
+                    </section>
+                    <section>
+                        <h3>Syntax</h3>
+<pre><code contenteditable>function a() {}
+
+var b = function () {};
+
+var c = function d() {};
+</code></pre>
+                    </section>
+                    <section>
+                        <h4>Declaration</h4>
+<pre><code contenteditable>function a() {}</code></pre>
+                        <p>
+                            Ist sofort verfügbar (wegen Hoisting).
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Expression</h4>
+<pre><code contenteditable>var a = function b() {};</code></pre>
+                        <p>
+                            Ist erst verfügbar, nachdem die Expression ausgewertet wurde.
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Context</h3>
+                        <p>
+                            <code>this</code> zeigt innerhalb einer Funktion auf den jeweiligen sog. Context
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Invocation</h3>
+                        <ul>
+                            <li class="fragment">standardmäßig zeigt <code>this</code> auf das globale Objekt</li>
+                            <li class="fragment">wird die Funktion auf einem Objekt aufgerufen (<code>obj.fnName()</code>) zeigt <code>this</code> auf das Objekt</li>
+                            <li class="fragment">mit <code>.call()</code> bzw. <code>.apply()</code> lässt sich der Context explizit definieren</li>
+                            <li class="fragment"><code>.bind()</code> macht den Context (fast) unveränderbar</li>
+                            <li class="fragment">bei Aufruf mit dem <code>new</code>-Operator zeigt der Context <em>immer</em> auf ein neues Objekt</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Arguments</h3>
+                        <ul>
+                            <li class="fragment">Funktionen lassen sich problemlos überladen</li>
+                            <li class="fragment"><code>arguments</code> innerhalb der Funktion enthält alle übergebenen Argumente</li>
+                            <li class="fragment">Achtung: <code>arguments</code> verhält sich wie ein Array, ist aber keins</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Scope</h3>
+                        <ul>
+                            <li class="fragment">der Scope einer Funktion ist die Sammlung aller sichtbaren Variablen innerhalb der Funktion</li>
+                            <li class="fragment">Variablen sind nur innerhalb ihres Funktion und für alle darunter geschachtelten Funktionen sichtbar</li>
+                            <li class="fragment">Funktionen sind die einzige Möglichkeit in JavaScript Sichtbarkeiten zu begrenzen</li>
+                            <li class="fragment">niemals <code>var</code> vergessen</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Funktionen als Callbacks</h4>
+<pre><code contenteditable>var result = [];
+
+fs.readFile(
+    "some/text/file.txt",
+    "utf8",
+    function onFileRead(err, content) {
+        if (err) {
+            throw err;
+        }
+
+        result.push(content);
+    }
+);</code></pre>
+
+<pre><code contenteditable>var alphabet = "";
+
+["a", "b", "c", "d"].forEach(function forEachLetter(letter) {
+    alphabet += letter;
+});</code></pre>
+                    </section>
+                    <section>
+                        <h4>Immediately-Invoked Function Expression (IIFE)</h4>
+<pre><code contenteditable>(function someFunction(window) {
+    var a = "a",
+        b = "b";
+})(window);
+
+typeof someFunction; // undefined
+typeof a; // undefined</code></pre>
+                        <ul>
+                            <li class="fragment">Klammern um die Funktion machen die Declaration zu einer Expression</li>
+                            <li class="fragment">einfachste Form der Kapselung / Modularisierung</li>
+                            <li class="fragment">als Parameter werden globale Dependencies übergeben</li>
+                            <li class="fragment">in node.js nicht notwendig</li>
+                        </ul>
+                    </section>
+
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Klassen & Vererbung</h2>
+                        <img src="img/inheritance.jpg">
+                    </section>
+                    <section>
+                        <h3>Es gibt keine Klassen in JavaScript.</h3>
+                        <p class="fragment">Wooass??</p>
+                    </section>
+                    <section>
+                        <h3>Aber es gibt Funktionen und den <code>new</code>-Operator.</h3>
+                    </section>
+                    <section>
+                        <p>Verschiedene Klassenschreibweisen in JavaScript:</p>
+<pre><code contenteditable>function MyClass(a, b, c) {
+    function somePrivateMethod() { ... }
+
+    this.somePublicMethod = function () { ... };
+}</code></pre>
+
+<pre><code contenteditable>function MyClass() {
+    function somePrivateMethod() { ... }
+
+    return {
+        somePublicMethod: function () { ... }
+    };
+}</code></pre>
+
+<pre><code contenteditable>function MyClass(a, b, c) {}
+MyClass.prototype._somePrivateMethod = function () { ... };
+MyClass.prototype.somePublicMethod = function () { ... };</code></pre>
+                    </section>
+                    <section>
+                        <h3>Prototypen</h3>
+                        <p>
+                            Jede Funktion besitzt einen <code>prototype</code>, der angibt, welche Eigenschaften ein
+                            Objekt hat, das von der Funktion per <code>new</code> erzeugt wurde.
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Beispiel</h4>
+<pre><code contenteditable>function Monster() {}
+
+Monster.prototype.health = 10;
+Monster.prototype.growl = function () {
+    console.log("GRRROOOOOWWWWLLL!!");
+};</code></pre>
+<pre class="fragment"><code contenteditable>> var monster = new Monster();
+> monster.health
+10
+> monster.growl()
+GRRROOOOOWWWWLLL!!</code></pre>
+                    </section>
+                    <section>
+                        <h4>Aber:</h4>
+<pre><code contenteditable>> monster.hasOwnProperty("health")
+false</code></pre>
+<pre class="fragment"><code contenteditable>> monster.health = 5;
+> monster.hasOwnProperty("health")
+true</code></pre>
+                    </section>
+                    <section>
+                        <img src="img/prototype-chain.svg" class="no-border">
+                        <ul>
+                            <li class="fragment">jedes Objekt kennt über eine (versteckte) Referenz seinen Prototyp</li>
+                            <li class="fragment">wird eine Eigenschaft auf einem Objekt nicht gefunden, so wird dessen Prototyp abgefragt, usw.</li>
+                            <li class="fragment">Zuweisungen geschehen <em>immer</em> auf dem eigentlichen Objekt</li>
+                        </ul>
+                    </section>
+                    <section>
+<pre><code contenteditable>> monster.health = 5;
+> monster.health
+5
+> delete monster.health;
+> monster.health
+10</code></pre>
+                    </section>
+                    <section>
+                        <p>
+                            Der Vorteil der Prototypen-Vererbung ist, dass alle Instanzen sich die Eigenschaften teilen,
+                            solange sie nicht vom Prototyp abweichen.
+                        </p>
+                        <p class="fragment">
+                            = deutlich geringerer Speicherverbrauch
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Vergleich (bei 10 Instanzen)</h4>
+<pre><code contenteditable>function Monster() {}
+
+Monster.prototype.health = 10;
+Monster.prototype.growl = function () {
+    console.log("GRRROOOOOWWWWLLL!!");
+};</code></pre>
+                        <p>
+                            10x Objects + 1x Primitive + 1x Function
+                        </p>
+<pre><code contenteditable>function Monster() {
+    this.health = 10;
+    this.growl = function () {
+        console.log("GRRROOOOOWWWWLLL!!");
+    };
+}</code></pre>
+                        <p>
+                            10x Objects + 10x Primitives + 10x Functions
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Problem bei der Prototypen-Vererbung:</h4>
+<pre><code contenteditable>Monster.prototype.victims = [];</code></pre>
+<pre><code contenteditable>> monster1.victims.push("Human");
+> monster2.victims
+["Human"]</code></pre>
+                        <p>
+                            Alle Instanzen teilen sich <em>ein einziges</em> Objekt.<br>
+                            Gilt für alle komplexen Typen.
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Lösung:</h4>
+<pre><code contenteditable>function Monster() {
+    this.victims = [];
+}
+
+// Konvention: null deutet an, dass jede Instanz normalerweise
+// diese Eigenschaft besitzt.
+Monster.prototype.victims = null;</code></pre>
+<pre><code contenteditable>> monster1.victims.push("Human");
+> monster2.victims
+[]</code></pre>
+                        <p>
+                            Nun hat jede Instanz ihr eigenes, unabhängiges Objekt.
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Beispiel Prototypen-Vererbung</h4>
+<pre><code contenteditable>function Monster(name) {
+    this.name = name;
+}
+Monster.prototype.name = null;
+Monster.prototype.attack = function () { ... };</code></pre>
+
+<pre><code contenteditable>function Godzilla(name) {
+    // Ruft die Monster-Funktion auf this auf
+    Monster.apply(this, arguments);
+}
+// Erzeugt ein neues Objekt das als Prototyp Monster.prototype hat
+Godzilla.prototype = Object.create(Monster.prototype);
+Godzilla.prototype.attack = function () {
+    ...
+    // Ruft die attack-Funktion des Monsters auf diesem Objekt auf
+    Monster.prototype.attack.apply(this, arguments);
+};</code></pre>
+                    </section>
+                    <section>
+                        <h4>Ok, und wie gehen private Properties?</h4>
+                        <p class="fragment">
+                            ... es gibt kein <code>private</code> und <code>public</code> in JavaScript. Funktionen sind
+                            die einzige Möglichkeit, Sichtbarkeiten zu begrenzen.
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Konvention: Private Properties fangen mit einem Unterstrich an.</h4>
+<pre><code contenteditable>function Monster() {}
+Monster.prototype._health = 5;
+Monster.prototype.getHealth = function () {
+    return this._health;
+};</code></pre>
+                        <p>
+                            Attribute und Methoden, die mit einem Unterstrich beginnen, werden einfach nicht
+                            außerhalb der Klasse verwendet. Wer es doch macht - selbst schuld.
+                        </p>
+                    </section>
+                    <section>
+                        <h4>Zusammenfassung</h4>
+                        <ul>
+                            <li class="fragment">Jedes Objekt hat eine (versteckte) Referenz auf seinen Prototyp</li>
+                            <li class="fragment">Jede Funktion hat einen <code>prototype</code>, der auf alle Instanzen angewendet wird</li>
+                            <li class="fragment">Vorsicht bei komplexen Typen auf dem <code>prototype</code></li>
+                            <li class="fragment">überschriebene Methoden müssen "manuell" mit dem richtigen Context aufgerufen werden</li>
+                            <li class="fragment">private Properties beginnen mit einem Unterstrich <code>_</code></li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Literatur</h2>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/en/JavaScript/Reference" target="_blank">https://developer.mozilla.org/en/JavaScript/Reference</a></li>
+                        <li><a href="http://bonsaiden.github.io/JavaScript-Garden/" target="_blank">http://bonsaiden.github.io/JavaScript-Garden/</a></li>
+                        <li><a href="http://es5.github.io/" target="_blank">http://es5.github.io/</a></li>
+                    </ul>
+                </section>
+
+            </div>
+
+        </div>
+
+        <script src="../../assets/reveal.js/lib/js/head.min.js"></script>
+        <script src="../../assets/reveal.js/js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: '../../assets/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../../assets/reveal.js/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: '../../assets/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: '../../assets/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '../../assets/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../../assets/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                    // { src: '../../assets/reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+                    // { src: '../../assets/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
