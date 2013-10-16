@@ -8,7 +8,7 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 ## Agenda
 
 - 09.10. [Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
-- 16.10. Javascript WTF
+- 16.10. [Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf/)
 - 23.10. Node.js Basics
 - 30.10. Web-Hacking
 - 06.11. __Projekt Einteilung__
