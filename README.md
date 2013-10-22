@@ -9,7 +9,7 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 
 - 09.10. [Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
 - 16.10. [Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf/)
-- 23.10. Node.js Basics
+- 23.10. [Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics/)
 - 30.10. Web-Hacking
 - 06.11. __Projekt Einteilung__
 - 13.11. Datenbanken (MongoDB, LevelDB)
