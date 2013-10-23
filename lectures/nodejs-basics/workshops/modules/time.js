@@ -7,3 +7,8 @@ function getCurrentTime() {
 function getTimeSinceRequire() {
     return new Date() - requiredTime;
 }
+
+exports.requiredTime = requiredTime;
+
+exports.getCurrentTime = getCurrentTime;
+exports.getTimeSinceRequire = getTimeSinceRequire;
