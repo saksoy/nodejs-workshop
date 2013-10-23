@@ -24,4 +24,5 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 
 ## Aufgaben
 
-- [Aufgaben](https://github.com/hsa-nodejs-workshop/aufgaben)
+- [Aufgaben](https://github.com/hsa-nodejs-workshop/aufgaben-ws-13-14/)
+- [Fragen zu den Aufgaben](https://github.com/hsa-nodejs-workshop/aufgaben-ws-13-14/issues)
