@@ -7,7 +7,7 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 
 ## Agenda
 
-- 09.10. [Einführung](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
+- 09.10. [Einführung]((http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/einfuehrung/)
 - 16.10. [Javascript WTF](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/javascript-wtf/)
 - 23.10. JavaScript WTF-Übungen
 - 30.10. [Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics/)
@@ -18,11 +18,15 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 - 04.12. Best-Practice
 - 11.12. Test-Driven-Development
 - 18.12. _Projekt-Support_
-- 08.01. __Projekt-Abgabe__
+- 08.01  __Projekt-Abgabe__
 - 15.01. __Projekt-Kurzpräsentation__
 - 22.01. frei! yeeha!
 
 ## Aufgaben
 
-- [Aufgaben](https://github.com/hsa-nodejs-workshop/aufgaben-ws-13-14/)
-- [Fragen zu den Aufgaben](https://github.com/hsa-nodejs-workshop/aufgaben-ws-13-14/issues)
+- [Aufgaben](https://github.com/hsa-nodejs-workshop/aufgaben-ws-13-14)
+
+
+## Projekte
+
+- [Projekte](https://github.com/hsa-nodejs-workshop/Projekte)
