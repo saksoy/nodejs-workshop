@@ -5,9 +5,3 @@ function toLowerCase(str) {
 function toUpperCase(str) {
     return str.toUpperCase();
 }
-
-exports.toUpperCase = toUpperCase;
-exports.toLowerCase = toLowerCase;
-
-exports.uc = toUpperCase;
-exports.lc = toLowerCase;
