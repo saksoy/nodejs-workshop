@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="926.5px" height="204px" viewBox="0 73.5 926.5 204" enable-background="new 0 73.5 926.5 204" xml:space="preserve">
+<g>
+	<rect x="262.25" y="128.5" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="180" height="101"/>
+	<rect x="484.25" y="128.5" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="180" height="101"/>
+	<rect x="274.75" y="167.5" fill="none" width="155" height="40"/>
+	<text transform="matrix(1 0 0 1 327.2195 190.6003)" font-family="'QuicksandBook-Regular'" font-size="33">OS</text>
+	<rect x="496.75" y="167.5" fill="none" width="155" height="40"/>
+	<text transform="matrix(1 0 0 1 516.863 190.6003)" font-family="'QuicksandBook-Regular'" font-size="33">node.js</text>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="432" y1="153.139" x2="497.01" y2="153.139"/>
+			<g>
+				<polygon points="493.166,157.229 492.26,156.496 497.052,153.14 492.26,149.782 493.166,149.05 499,153.14 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="431.658" y1="205.805" x2="496.668" y2="205.805"/>
+			<g>
+				<polygon points="429.668,205.806 435.502,201.717 436.408,202.449 431.615,205.806 436.408,209.163 435.502,209.895 				"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
