@@ -1,0 +1,10 @@
+{
+  "name": "levelDb-example",
+  "version": "0.0.1",
+  "description": "showing leveldb",
+  "main": "names.js",
+  "dependencies": {
+    "level": "*"
+  },
+  "license": "MIT"
+}

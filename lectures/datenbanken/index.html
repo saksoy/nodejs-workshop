@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Webentwicklung mit node.js - Datenbanken</title>
+
+    <meta name="author" content="peerigon">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../assets/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="../../assets/reveal.js/css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/reveal.js/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write( '<link rel="stylesheet" href="../../assets/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <style type="text/css">
+        .reveal section .no-border {
+            background: transparent;
+            border: 0;
+            box-shadow: 0 0 0;
+        }
+
+        .reveal h2 {
+            line-height: 1.2em;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-rendering: optimizeLegibility;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="../../assets/reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <small style="padding: 10px;">
+        Webentwicklung mit node.js<br/>
+        HS Augsburg
+    </small>
+
+    <small style="padding: 10px; float: right; text-align: right;">
+        Datenbanken<br/>20.11.2013
+    </small>
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+        <section>
+            <h2>Datenbanken</h2>
+        </section>
+
+        <section>
+                  <section>
+                      <h2>LevelDB - levelup/level</h2>
+                  </section>
+
+                  <section>
+
+                      <h2>LevelDB</h2>
+
+                      <blockquote>
+                          LevelDB is a fast key-value storage library written at Google that provides an ordered mapping from string keys to string values. (https://code.google.com/p/leveldb/)
+                      </blockquote>
+                  </section>
+
+                  <section>
+                      <h2>Features</h2>
+                      <ul>
+                          <li>embedded Key-Value Store</li>
+                          <li>sortiert nach keys</li>
+                          <li>values werden mit "Snappy" komprimiert</li>
+                          <li>besteht aus C++ Bibliothek</li>
+                          <li>kein eigener Server-Prozess nötig</li>
+                          <li>Basis für Chromes IndexedDB</li>
+                          <li>Operations: Get(), Put(), Del()</li>
+                      </ul>
+                  </section>
+
+          <section>
+              <h2>LevelUp</h2>
+<pre><code>var db = levelup('/path/to/database')
+
+db.put('key', 'value', function (err) { /* ... */ })
+db.get('key', function (err, value) { /* ... */ })
+db.del('key', function (err) { /* ... */ })
+
+db.close(function (err) { /* closed */ })</code></pre>
+
+<pre class="fragment"><code>// multiple atomic writes with batch()
+var operations = [
+  { type: 'put', key: 'Franciscus', value: 'Jorge Bergoglio' }
+, { type: 'del', key: 'Benedictus XVI' }
+]
+
+db.batch(operations, function (err) { /* ... */ })</code></pre>
+              <small>Quelle: http://r.va.gg/presentations/node.ninjas/#/5</small>
+          </section>
+
+          <section>
+              <h2>Names Beispiel</h2>
+
+<pre><code>var levelup = require('level')
+var db = levelup('/db/names.db')
+
+db.batch([
+  { type: 'put', key: 'Michael', value: 'm'},
+  { type: 'put', key: 'Michaela', value: 'f'},
+  { type: 'put', key: 'Michail', value: 'm'}
+], function(err) {
+  if(err) { console.log(err.message); }
+});</code></pre>
+<pre class="fragment"><code>db.get("Michael", function(err, value) {
+  console.log("Michael > " + value);
+});
+</code></pre>
+<pre class="fragment"><code>Michael > m</code></pre>
+          </section>
+          <section>
+<h2>Streams</h2>
+<pre><code>db.createReadStream()
+.on('data', console.log);
+</code></pre>
+<pre class="fragment"><code>{ key: 'Michael', value: 'm'},
+{ key: 'Michaela', value: 'f'},
+{ key: 'Michail', value: 'm'}</code></pre>
+<pre class="fragment"><code>db.createReadStream({ keys: true, values: false }).pipe(process.stdout);
+</code></pre>
+<pre class="fragment"><code>Michael
+Michaela
+Michael</code></pre>
+</section>
+<section>
+  <h2>Filter</h2>
+<pre><code>db.createReadStream({ start : 'Michaela' })
+.on('data', console.log);
+</code></pre>
+<pre class="fragment"><code>{ key: 'Michaela', value: 'f'},
+{ key: 'Michail', value: 'm'}</code></pre>
+<pre class="fragment"><code>db.createReadStream({ start : 'Mi' })
+.on('data', console.log);
+</code></pre>
+<pre class="fragment"><code>{ key: 'Michael', value: 'm'},
+{ key: 'Michaela', value: 'f'},
+{ key: 'Michail', value: 'm'}</code></pre>
+</section>
+  <section>
+  <h2>LevelDB</h2>
+                 <ul>
+                     <li>klare, einfach API (put, get, del, batch)</li>
+                     <li>keine Server-Installation nötig</li>
+                     <li>sehr schnelle Reads & Writes</li>
+                     <li>erweiterbar durch node-module</li>
+                     <li>austauschbares Backend (indexedDB im Browser)</li>
+                     <li>leider Probleme unter Windows</li>
+                 </ul>
+
+          <br><br>
+                 <p><a href="https://github.com/rvagg/node-levelup">https://github.com/rvagg/node-levelup</a></p>
+          </section>
+      </section>
+
+        <section>
+            <section>
+                <h2>MongoDB - mongoose</h2>
+            </section>
+
+            <section>
+                <img src="./img/logo-mongodb.png" />
+
+                <blockquote>
+                    MongoDB (from "humongous") is an open-source document database, and the leading NoSQL database. (http://www.mongodb.org/)
+                </blockquote>
+
+            </section>
+
+            <section>
+                <h2>Relationale-Datenbank</h2>
+                <img src="./img/relational.jpg" >
+            </section>
+
+            <section>
+                <h2>Dokumenten-Datenbank</h2>
+                <img src="./img/embedded.jpg" >
+            </section>
+
+            <section>
+                <h2>MongoDB</h2>
+            <ul>
+                <li>Table -> Collection</li>
+                <li>Row -> Document</li>
+                <li>keine Joins</li>
+                <li>verschachtelte Dokumente möglich</li>
+                <li>Embedding für 1:n</li>
+                <li>Linking für n:m</li>
+            </ul>
+            </section>
+
+            <section>
+                <h2>mongoose</h2>
+<pre><code>var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
+
+var CatSchema = mongoose.Schema({
+    name: String
+});
+
+var Cat = mongoose.model('Cat', CatSchema);
+
+var kitty = new Cat({ name: 'Zildjian' });
+
+kitty.save(function (err) {
+  if (err) // ...
+});</code></pre>
+            </section>
+            <section>
+                <h2>mongoose</h2>
+                <ul>
+                    <li>ORM für MongoDB</li>
+                    <li>Schemata für Dokumente</li>
+                    <li>Models mit getter, setter, default</li>
+                    <li>Validierung</li>
+                </ul>
+            </section>
+
+<section>
+
+<h2>Schema</h2>
+
+<pre><code>var mongoose = require("mongoose");
+var db = mongoose.connect("mongodb://localhost/test");
+
+var BlogSchema = mongoose.Schema({
+    title : {
+        type : String,
+        required : true,
+        unique : true
+    },
+    createdAt : {
+        type : Date,
+        "default" : Date.now
+    }
+});
+
+//Blog-Model mit Schema BlogSchema registrieren
+var Blog = mongoose.model('Blog', BlogSchema);</code></pre>
+</section>
+
+
+        <section>
+            <h2>Validierung</h2>
+
+<pre><code>
+var BlogSchema = mongoose.Schema({
+    title : {
+        type : String,
+        validate : function(title) { return title.length > 10; }
+        unique : true
+    },
+    entries : [BlogEntrySchema] //Array vom Typ BlogEntry
+    createdAt : {
+        type : Date,
+        default : Date.now,
+        required : true
+    }
+});</code></pre>
+<ul>
+    <li>definiert im Schema</li>
+    <li>fertige Validatoren (required/enum/min/max...)</li>
+    <li>eigene Validatoren (sync oder async)</li>
+    <li>automatische Validierung bei model.save()</li>
+    <li>manuell durch model.validate()</li>
+</ul>
+            </section>
+
+
+<section>
+
+    <h2>model.save()</h2>
+
+<pre><code>
+//wir holen uns das vorher registrierte Blog-Model
+var Blog = mongoose.model('Blog');
+
+//wir erstellen eine Blog-Instanz
+var hsaNodeBlog = new Blog({ title : "hsaNode"});
+
+//und... speichern!
+hsaNodeBlog.save(function(err, createdBlog) {
+
+    if(err) { throw err; }
+
+    console.log("Blog created: " + createdBlog);
+});</code></pre>
+
+<pre class="fragment"><code>Blog created:
+{
+    __v: 0,
+    title: 'hsaNode',
+    _id: 518c04f9785a558630000001,
+    createdAt: Thu May 09 2013 22:20:09 GMT+0200 (CEST)
+}</code></pre>
+</section>
+
+<section>
+    <h2>find / findOne / findById</h2>
+<pre><code>Blog.findOne({ title : "hsaNode"}, function(err, hsaNodeBlog) {
+
+   if(err) { throw err; }
+
+    console.log("found blog: ", hsaNodeBlog);
+});</code></pre>
+
+<pre class="fragment"><code>found blog:
+{
+  title: 'hsaNode',
+  _id: 518c03ee361b296230000001,
+  __v: 0,
+  createdAt: Thu May 09 2013 22:15:42 GMT+0200 (CEST),
+  entries: []
+}</code></pre>
+</section>
+
+<section>
+    <h2>find / findOne / findById</h2>
+<pre><code>Blog.findById(518c03ee361b296230000001, ...)
+//-> gibt ein Dokument zurück
+
+Blog.find({ title : "hsaNode" })
+// -> gibt array zurück
+
+Blog.findOne({ title : "hsaNode" })
+// -> gibt ein Dokument zurück
+
+Blog.count({ title : "hsaNode" })
+// -> 1 </code></pre>
+</section>
+
+<section>
+    <h2>Update</h2>
+<pre><code>//via find & Dokument bearbeiten
+Blog.findOne({ title : "hsaNode"}, function(err, hsaNodeBlog) {
+
+    //das Dokument direkt modifizieren
+    hsaNodeBlog.title = "HSA Node.js Blog";
+
+    //das veränderte Dokument abspeichern
+    hsaNodeBlog.save(function(err, savedNodeBlog) {
+        console.log(savedNodeBlog); //geändertes Dokument
+    });
+});</code></pre>
+
+<pre class="fragment"><code>//direkt per Update
+Blog.update(
+    { title : "hsaNode" }, // welche(s) Dokument(e)?
+    { title : "HSA Node.js Blog" }, // was soll geändert werden?
+    function(err) {
+    ...
+});</code></pre>
+    <div class="fragment">
+    <p>oder...</p>
+    <ul>
+        <li>Model.findOneAndUpdate</li>
+        <li>Model.findByIdAndUpdate</li>
+    </ul>
+    </div>
+
+</section>
+
+<section>
+<h2>Remove</h2>
+<pre><code>//via find & Dokument löschen
+Blog.findOne({ title : "hsaNode"}, function(err, hsaNodeBlog) {
+
+    //das gefundene Objekt löschen
+    hsaNodeBlog.remove(function(err) {
+        ...
+    });
+});</code></pre>
+
+<pre class="fragment"><code>//direkt per Remove
+Blog.remove(
+    { title : "hsaNode" } // welche(s) Dokument(e)?
+    function(err) {
+    ...
+});</code></pre>
+    <div class="fragment">
+    <p>oder...</p>
+    <ul>
+        <li>Model.findOneAndRemove</li>
+        <li>Model.findByIdAndRemove</li>
+    </ul>
+    </div>
+
+</section>
+
+<section>
+    <h2>Embedded Documents</h2>
+<pre><code>var BlogEntrySchema = mongoose.Schema({
+    author : String,
+    body : String
+});
+
+var BlogSchema = mongoose.Schema({
+    title : {
+        type : String,
+        required : true,
+        unique : true
+    },
+    entries : [BlogEntrySchema] //Array vom Typ BlogEntry
+    createdAt : {
+        type : Date,
+        "default" : Date.now
+    }
+});</code></pre>
+</section>
+
+<section>
+    <h2>Embedded Documents</h2>
+<pre><code>Blog.findOne({ title : "hsaNode"}, function(err, hsaNodeBlog) {
+
+    var entry = {
+        author : "meaku"
+        body : "mongoose yeah!"
+    };
+
+    hsaNodeBlog.entries.push(entry);
+
+    //speichern immer nur auf dem "Haupt-Dokument"
+    hsaNodeBlog.save(function(err, savedNodeBlog) {
+        console.log(savedNodeBlog);
+    });
+});</code></pre>
+
+<pre class="fragment"><code>{
+  title: 'hsaNode',
+  _id: 518c03ee361b296230000001,
+  __v: 1,
+  createdAt: Thu May 09 2013 22:15:42 GMT+0200 (CEST),
+  entries:
+   [ { author: 'meaku',
+       body: 'mongoose yeah!',
+       _id: 518c09bc44a3b44131000002 }
+   ]
+}</code></pre>
+            </section>
+
+<section>
+    <h2>Embedded Documents</h2>
+
+<pre><code>{
+  title: 'hsaNode',
+  _id: 518c03ee361b296230000001,
+  __v: 1,
+  createdAt: Thu May 09 2013 22:15:42 GMT+0200 (CEST),
+  entries:
+   [ { author: 'meaku',
+       body: 'mongoose yeah!',
+       _id: 518c09bc44a3b44131000002 },
+    { author: 'jhnns',
+       body: 'mongoose ftw!',
+       _id: 518c09bc44a3b44131000003 }
+   ]
+}</code></pre>
+<pre class="fragment"><code>Blog.findOne({ title : "hsaNode"}, function(err, hsaNodeBlog) {
+
+    //hsaNodeBlog.entries = Array
+
+    //zugriff übers array
+    var mgYeahEntry = hsaNodeBlog.entries[0];
+
+    //oder über subquery auf id (geht nur mit id)
+    mgYeahEntry = hsaNodeBlog.entries.id(518c09bc44a3b44131000002);
+});</code></pre>
+
+
+            </section>
+<section>
+    <h2>Queries</h2>
+<pre><code>{
+  title: 'hsaNode',
+  _id: 518c03ee361b296230000001,
+  __v: 1,
+  createdAt: Thu May 09 2013 22:15:42 GMT+0200 (CEST),
+  entries:
+   [ { author: 'meaku',
+       body: 'mongoose yeah!',
+       _id: 518c09bc44a3b44131000002 }
+   ],
+   tags : ["mongoose", "yeah"]
+}</code></pre>
+<pre class="fragment"><code>//dot-Notation
+Blog.findOne({ "entries.author": "meaku" }, callback)</code></pre>
+<pre class="fragment"><code>//query
+Blog.find().find({ title : "hsaNode" })
+.where("entries.author").equals("meaku") //zugriff auf unterattr.
+.where("age").lt(Date.now) //lt = lower then
+.where("tags").in(["mongoose", "yeah"]) //array check
+.limit(10) //wie viele werte
+.sort("-createdAt") //sort createdAt absteigend
+.select("title entries") //welche attr. brauchen wir
+.exec(callback); //query ausführen
+</code></pre>
+</section>
+
+<section>
+    <h2>Population</h2>
+<pre><code>var personSchema = Schema({
+  _id     : Number,
+  name    : String,
+  age     : Number,
+  stories : [{ type: Schema.Types.ObjectId, ref: 'Story' }]
+});
+
+var storySchema = Schema({
+  _creator : { type: Number, ref: 'Person' },
+  title    : String,
+  fans     : [{ type: Number, ref: 'Person' }]
+});
+
+var Story  = mongoose.model('Story', storySchema);
+var Person = mongoose.model('Person', personSchema);</code></pre>
+</section>
+
+<section>
+<h2>Population</h2>
+<pre><code>Story
+.findOne({ title: 'Once upon a timex.' })
+.populate('_creator')
+.exec(function (err, story) {
+  if (err) return handleError(err);
+  console.log('The creator is %s', story._creator.name);
+  // prints "The creator is Aaron"
+});</code></pre>
+
+<ul class="fragment">
+    <li>Ersatz für Joins</li>
+    <li>lädt automatisch verlinkte Dokumente</li>
+    <li>nur nötig wenn separat gespeichert</li>
+    <li>Definition über <strong>ref</strong></li>
+    <li>Population via <strong>.populate(attribute)</strong></li>
+    <li>Sucht das in <i>ref</i> definierte Objekt anhand der <i>ID</i></li>
+</ul>
+</section>
+
+<section>
+ <h2>Und viel mehr...</h2>
+ <ul>
+     <li>Setter/Getter</li>
+     <li>Virtuals</li>
+     <li>Methods</li>
+     <li>Statics</li>
+     <li>komplexe Queries</li>
+     <li>Query-Streams</li>
+ </ul>
+    <br>
+    <br>
+ <p><a href="http://mongoosejs.com/">http://mongoosejs.com/</a></p>
+</section>
+</section>
+
+
+<section>
+    <section>
+        <h2>Sequelize</h2>
+    </section>
+
+    <section>
+        <h2>Sequelize</h2>
+        <blockquote>The Sequelize library provides easy access to MySQL, SQLite or PostgreSQL databases by mapping database entries to objects
+            and vice versa. To put it in a nutshell... it's an ORM (Object-Relational-Mapper). The library is written entirely in JavaScript
+            and can be used in the Node.JS environment.</blockquote>
+        <br>
+        <p><a href="https://github.com/sequelize/sequelize">https://github.com/sequelize/sequelize</a></p>
+    </section>
+
+    <section>
+        <h2>Raw SQL Queries</h2>
+<pre><code>sequelize.query("SELECT * FROM myTable").success(function(myTableRows) {
+    console.log(myTableRows)
+})</code></pre>
+    </section>
+
+    <section>
+        <h2>Models</h2>
+
+<pre><code>var BlogEntry = sequelize.define('BlogEntry', {
+    title: {
+        type: Sequelize.STRING,
+        unique: true
+    },
+    body: Sequelize.TEXT
+});
+
+var Blog = sequelize.define('Blog', {
+    title: Sequelize.STRING,
+    createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+    }
+});</code></pre>
+</section>
+
+    <section>
+        <h2>Validators</h2>
+<pre><code>var ValidateMe = sequelize.define('Foo', {
+  foo: {
+    type: Sequelize.STRING,
+    validate: {
+      is: ["[a-z]",'i'],  // will only allow letters
+      not: ["[a-z]",'i'], // will not allow letters
+      isEmail: true,      // checks for email format (foo@bar.com)
+      isUrl: true,        // checks for url format (http://foo.com)
+      isIP: true,         // checks for IPv4 format (129.89.23.1)
+      isAlpha: true
+        ...
+    }
+});</code></pre>
+    </section>
+
+<section>
+    <h2>Find / Queries</h2>
+<pre><code>// search for known ids
+Blog.find(123).success(function(blog) {
+  // blog will be an instance of Blog
+});
+
+// search for attributes
+Blog.find({ where: {title: 'nodejs'} }).success(function(blog) {
+  // blog will be the first entry of the Blogs table
+  // with the title 'nodejs' || null
+});
+
+// since v1.3.0: only select some attributes and rename one
+Blog.find({
+  where: {title: 'nodejs'},
+  attributes: ['id', ['name', 'title']]
+}).success(function(blog) { ... })</pre></code>
+</section>
+
+<section>
+    <h2>Create Update Delete</h2>
+<pre><code>//CREATE
+BlogEntry.create({ title: 'foo' }).success(function(blogEntry) {
+  // you can access blogEntry here
+});</code></pre>
+
+<pre class="fragment"><code>//UPDATE
+// way 1
+blogEntry.title = 'a very different title now'
+blogEntry.save().success(function() {})
+
+// way 2
+blogEntry.updateAttributes({
+  title: 'a very different title now'
+}).success(function() {})</code></pre>
+<pre class="fragment"><code>//DESTROY
+BlogEntry.create({ title: 'a task' }).success(function(blogEntry) {
+  // now you see me...
+
+  blogEntry.destroy().success(function() {
+    // now i'm gone :)
+  })
+});</code></pre>
+</section>
+
+<section>
+    <h2>Associations</h2>
+<pre><code>var BlogEntry = sequelize.define('BlogEntry', {...});
+
+var Blog = sequelize.define('Blog', {...});
+
+Blog.hasMany(BlogEntry, {as: 'Entries'});
+</code></pre>
+
+<pre class="fragment"><code>var blog = Blog.find(...)
+
+BlogEntry.create(...).success(function (entry) {
+    //association speichern
+    blog.setEntries([entry]).success(...)
+}});</code></pre>
+
+<pre class="fragment"><code>var blog = Blog.find(...)
+
+blog.getEntries().success(function(entries) {
+   //all entries here
+});</code></pre>
+</section>
+
+<section>
+    <h2>Datenbanken</h2>
+    <ul>
+        <li>MySQL</li>
+        <li>SQLite</li>
+        <li>PostgreSQL</li>
+    </ul>
+</section>
+
+</section>
+    </div>
+
+</div>
+
+<script src="../../assets/reveal.js/lib/js/head.min.js"></script>
+<script src="../../assets/reveal.js/js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            { src: '../../assets/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            { src: '../../assets/reveal.js/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../assets/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../assets/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            { src: '../../assets/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+            { src: '../../assets/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+            // { src: '../../assets/reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+            // { src: '../../assets/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+    });
+
+</script>
+
+</body>
+</html>
