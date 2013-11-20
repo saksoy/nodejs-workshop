@@ -13,7 +13,7 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 - 30.10. [Node.js Basics](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/nodejs-basics/)
 - 06.11. [Web-Hacking](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/web-hacking/)
 - 13.11. __Projekt Einteilung__
-- 20.11. Datenbanken (MongoDB, LevelDB)
+- 20.11. [Datenbanken](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/datenbanken/)
 - 27.11. Error-Handling / Flow-Control
 - 04.12. Best-Practice
 - 11.12. Test-Driven-Development
