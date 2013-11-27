@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Webentwicklung mit node.js - Error-Handling / Flow-Control</title>
+
+    <meta name="author" content="peerigon">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../assets/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="../../assets/reveal.js/css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/reveal.js/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write( '<link rel="stylesheet" href="../../assets/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <style type="text/css">
+        .reveal section .no-border {
+            background: transparent;
+            border: 0;
+            box-shadow: 0 0 0;
+        }
+
+        .reveal h2 {
+            line-height: 1.2em;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-rendering: optimizeLegibility;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="../../assets/reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <small style="padding: 10px;">
+        Webentwicklung mit node.js<br/>
+        HS Augsburg
+    </small>
+
+    <small style="padding: 10px; float: right; text-align: right;">
+        Best Practice<br/>27.11.2013
+    </small>
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+        <section>
+            <section>
+                <h2>Error-Handling</h2>
+            </section>
+
+            <section>
+                <h2>Beispiel: readJSON</h2>
+
+                <p>Wir wollen eine JSON-Datei auslesen und direkt zu einem Objekt parsen.</p>
+                <br>
+                <p>Das Auslesen der Datei geschieht asynchron, das parsen des JSON-Streams ist synchron.</p>
+                <br>
+                <code>readJSON(path, callback);</code>
+
+            </section>
+
+<section>
+<h2>Erster Versuch</h2>
+
+<pre><code>function readJSON(path, callback) {
+    fs.readFile(path, { encoding : "utf-8" }, function(err, jsonStr) {
+        callback(JSON.parse(jsonStr));
+    });
+}</code></pre>
+
+<span>
+<pre class="fragment"><code>> readJSON(__dirname + "/data/valid.json", function(data) {
+    console.log(data);
+});</code></pre>
+<pre class="fragment"><code>{ valid : true }</code></pre>
+</span>
+
+<span>
+<pre class="fragment"><code>> readJSON(__dirname + "/data/invalid.json", ...);</code></pre>
+<pre class="fragment"><code>valid : false
+    ^
+SyntaxError: Unexpected token v</code></pre>
+</span>
+
+<span>
+<pre class="fragment"><code>> readJSON(__dirname + "/wrongPath/file.json", ...);</code></pre>
+<pre class="fragment"><code>undefined
+^
+SyntaxError: Unexpected token u</code></pre>
+</span>
+
+</section>
+
+<section>
+    <h2>1. Fehler durchreichen</h2>
+
+<pre><code>function readJSON(path, callback) {
+    fs.readFile(path, { encoding : "utf-8" }, function(err, jsonStr) {
+
+        //den Fehler von fs.readFile durchreichen
+        if(err) {
+            callback(err);
+            //den Rest der Funktion überspringen
+            return;
+        }
+
+        callback(JSON.parse(jsonStr));
+    });
+}</code></pre>
+
+<span>
+<pre class="fragment"><code>> readJSON(__dirname + "/wrongPath/file.json", function(err, data) {
+    console.log(err, data);
+})</code></pre>
+<pre class="fragment"><code>[Error: ENOENT, open '/wrongPath/file.json'], undefined</code></pre>
+</span>
+
+<pre class="fragment"><code>> readJSON(__dirname + "/data/valid.json", ...)</code></pre>
+<pre class="fragment"><code>{ valid : true }, undefined</code></pre>
+</span>
+
+</section>
+
+<section>
+    <h2>2. einheitliche Signatur</h2>
+
+<pre><code>function readJSON(path, callback) {
+    fs.readFile(path, { encoding : "utf-8" }, function(err, jsonStr) {
+
+        //den Fehler von fs.readFile durchreichen
+        if(err) {
+            callback(err);
+            //den Rest der Funktion überspringen
+            return;
+        }
+
+        //err = null als ersten Parameter
+        callback(null, JSON.parse(jsonStr));
+    });
+}</code></pre>
+
+<span>
+<pre class="fragment"><code>> readJSON(__dirname + "/wrongPath/file.json", function(err, data) {
+    console.log(err, data);
+}</code></pre>
+<pre class="fragment"><code>[Error: ENOENT, open '/wrongPath/file.json'], undefined</code></pre>
+</span>
+
+<pre class="fragment"><code>> readJSON(__dirname + "/data/valid.json", ...)</code></pre>
+<pre class="fragment"><code>null, { valid : true }</code></pre>
+</span>
+</section>
+<section>
+    <h2>3. Try/Catch</h2>
+
+<pre><code>function readJSON(path, callback) {
+    fs.readFile(path, { encoding : "utf-8" }, function(err, jsonStr) {
+        if(err) {
+            callback(err);
+            return;
+        }
+
+        //JSON parse könnte Fehler werfen
+        try {
+            callback(null, JSON.parse(jsonStr));
+        }
+        catch(err) {
+            callback(err);
+        }
+    });
+}</code></pre>
+
+<span>
+<pre class="fragment"><code>> readJSON(__dirname + "/data/invalid.json", function(err, data) {
+    console.log(err, data);
+}</code></pre>
+<pre class="fragment"><code>[SyntaxError: Unexpected token v] undefined</code></pre>
+</span>
+
+</section>
+
+            <section>
+                <h2>Errors via Events</h2>
+<pre><code>
+JSONReader.prototype.fromFile = function(path, callback) {
+
+    var self = this;
+
+    fs.readFile(path, { encoding : "utf-8"}, function(err, jsonStr) {
+
+        if(err) { self.emit("error", err); return; }
+
+        try {
+            callback(JSON.parse(jsonStr));
+        }
+        catch(err) {
+            self.emit("error", err);
+        }
+    });
+};</code></pre>
+            </section>
+
+<section>
+    <h2>Errors via Events</h2>
+<pre><code>var jsonReader = new JSONReader();
+
+//globaler handler für errs bei allen aufrufen
+jsonReader.on("error", function(err) {
+   console.log("Error caught: ", err.message);
+});</code></pre>
+
+<pre class="fragment"><code>jsonReader.fromFile(__dirname + "/wrongPath/f.json", function(data) {
+   console.log("loaded data", data);
+});</code></pre>
+
+<pre class="fragment"><code>Error caught:  ENOENT, open '/wrongPath/file.json'
+</code></pre>
+<pre class="fragment"><code>jsonReader.fromFile(__dirname + "/data/valid.json", function(data) {
+   console.log("loaded data", data);
+});</code></pre>
+<pre class="fragment"><code>loaded data { valid: true }</code></pre>
+</section>
+
+        </section>
+
+        <section>
+            <section>
+                <h2>Flow-Control</h2>
+            </section>
+
+            <section>
+                <h3>Beispiel: listDir</h3>
+                <p>
+                    Wir möchten eine Funktion <code>listDir(dirname, callback)</code> schreiben, die <code>dirname</code> asynchron
+                    einliest und anschließend <code>callback(null, results)</code> aufruft,
+                    wobei <code>results</code> ein Object ist, das die Verzeichnisstruktur widerspiegelt.
+                </p>
+<pre class="fragment"><code>{
+    'error-handling': {
+        'JSONReader.js': 'file',
+        'readJSON.js': 'file',
+        'data': {
+            'invalid.json': 'file',
+            'valid.json': 'file'
+        }
+    },
+    'flow-control': {
+        ...
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>Schritt 1: Verzeichnis einlesen</h3>
+<pre><code>fs.readdir(dirname, function (err, files) {
+    if (err) {
+        callback(err);
+        return;
+    }
+});</code></pre>
+            </section>
+
+            <section>
+                <h3>Schritt 2: fs.stat auf alle Dateien im Verzeichnis ausführen</h3>
+<pre><code>files.forEach(function (filename) {
+    var path = pathUtil.join(dirname, filename);
+
+    fs.stat(path, function (err, stat) {
+        if (err) {
+            callback(err);
+            return;
+        }
+    });
+});</code></pre>
+            </section>
+
+            <section>
+                <h3>Schritt 3: Rekursion und Ergebnis abspeichern</h3>
+<pre><code>if (stat.isDirectory()) {
+    listDir(path, function (err, dir) {
+        if (err) {
+            callback(err);
+            return;
+        }
+
+        result[filename] = dir;
+    });
+} else {
+    result[filename] = "file";
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>Problem: Wann sind alle fs.stat fertig?</h3>
+            </section>
+
+            <section>
+                <h3>Schritt 4: done()-Funktion einführen und Callbacks zählen</h3>
+<pre class="fragment"><code>pending = files.length;
+
+files.forEach(function (file) {
+    ...
+    done(filename, fileOrDir);
+});
+
+function done(filename, fileOrDir) {
+    pending--;
+    result[filename] = fileOrDir;
+    if (pending === 0) {
+        callback(null, result);
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>Welcome to the callback-hell!</h3>
+
+                <ul>
+                    <li class="fragment">Asynchroner Code ist schwerer zu lesen</li>
+                    <li class="fragment">Schleifen und Rekursion machen den Control-Flow undurchsichtig</li>
+                    <li class="fragment">Abhängigkeiten von asynchronen Funktionen benötigen zusätzliche Logik (Stichwort: <code>pending</code>)</li>
+                </ul>
+
+
+            </section>
+
+            <section>
+                <p>
+                    Deshalb sollte man bei komplizierteren, asynchronen Funktionen eine Control-Flow-Lib verwenden.
+                </p>
+            </section>
+
+            <section>
+                <h3>Möglichkeit 1: async</h3>
+                <a href="https://github.com/caolan/async">https://github.com/caolan/async</a><br>
+                <code>npm install async</code>
+            </section>
+
+            <section>
+                <h3>async.parallel</h3>
+<pre><code>async.parallel([
+    function A() { ... },
+    function B() { ... },
+    function C() { ... }
+], callback);</code></pre>
+                <ul>
+                    <li class="fragment">Führt <code>A, B, C</code> gleichzeitig aus</li>
+                    <li class="fragment">Falls eine Funktion mit <code>err</code> antwortet, wird sofort <code>callback(err)</code> aufgerufen</li>
+                    <li class="fragment">Wenn alle Funktionen ohne Fehler geantwortet haben wird <code>callback(null, results)</code> ausgeführt,
+                        wobei <code>results</code> die Ergebnisse von <code>A, B, C</code> beinhalten</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>async.series</h3>
+<pre><code>async.series([
+    function A() { ... },
+    function B() { ... },
+    function C() { ... }
+], callback);</code></pre>
+                <ul>
+                    <li class="fragment">Führt erst <code>A</code> aus</li>
+                    <li class="fragment">Falls <code>A</code> mit <code>err</code> antwortet, wird sofort <code>callback(err)</code> aufgerufen</li>
+                    <li class="fragment">Ansonsten wird anschließend <code>B</code> aufgerufen, usw.</li>
+                    <li class="fragment">Wenn alle Funktionen ohne Fehler geantwortet haben wird <code>callback(null, results)</code> ausgeführt,
+                        wobei <code>results</code> die Ergebnisse von <code>A, B, C</code> beinhalten</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>async.waterfall</h3>
+<pre><code>async.waterfall([
+    function A() { ... },
+    function B() { ... },
+    function C() { ... }
+], callback);</code></pre>
+                <ul>
+                    <li class="fragment">Wie <code>async.series</code>, aber ...</li>
+                    <li class="fragment">nachdem <code>A</code> geantwortet hat, wird <code>B</code> mit dem Ergebnis von <code>A</code> aufgerufen usw.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>async.whilst</h3>
+<pre><code>var count = 0;
+
+async.whilst(
+    function test() { return count < 5; },
+    function action(callback) {
+        count++;
+        setTimeout(callback, 1000);
+    },
+    function (err) {
+        // 5 seconds have passed
+    }
+);</code></pre>
+                <ul>
+                    <li class="fragment">Entspricht einer asynchronen <code>while</code>-Schleife</li>
+                    <li class="fragment">Führt <code>action</code> aus, solange <code>test true</code> returned</li>
+                </ul>
+            </section>
+
+            <section>
+                <p>Und außerdem noch typische Funktionen für Collections</p>
+            </section>
+
+            <section>
+                <h3>async.map</h3>
+<pre><code>async.map(
+    ['file1','file2','file3'],
+    fs.stat,
+    function callback(err, results) {
+    // results is now an array of stats for each file
+});</code></pre>
+                <ul>
+                    <li class="fragment">Ruft <code>fs.stat</code> mit jeweils <code>'file1', 'file2', 'file3'</code> auf</li>
+                    <li class="fragment">Wenn <code>fs.stat</code> einmal <code>err</code> zurückgibt, dann wird sofort <code>callback</code> ausführt</li>
+                    <li class="fragment"><code>results</code> enthält alle Ergebnisse (in der richtigen Reihenfolge)</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>async.filter</h3>
+<pre><code>async.filter(
+    ['file1','file2','file3'],
+    fs.exists,
+    function (results) {
+    // results now equals an array of the existing files
+});</code></pre>
+                <ul>
+                    <li class="fragment">Wie <code>async.map</code>, aber <code>results</code> enthält nur noch die Elemente, bei denen <code>fs.exists</code>
+                    mit <code>true</code> geantwortet hat.</li>
+                </ul>
+            </section>
+
+            <section>
+                <p>Und viele andere Funktionen: <code>
+    each
+    map
+    filter
+    reject
+    reduce
+    detect
+    sortBy
+    some
+    every
+    concat
+    series
+    parallel
+    whilst
+    doWhilst
+    until
+    doUntil
+    forever
+    waterfall
+    compose
+    applyEach
+    queue
+    cargo
+    auto
+    iterator
+    apply
+    nextTick
+    times
+    timesSeries
+</code></p>
+                <p>
+                    <a href="https://github.com/caolan/async#documentation">https://github.com/caolan/async#documentation</a>
+                </p>
+            </section>
+
+            <section>
+                <h3>Möglichkeit 2: Promises</h3>
+                <blockquote cite="http://documentup.com/kriskowal/q/#">
+                    If a function cannot return a value or throw an exception without blocking, it can return a promise instead.
+                    A promise is an object that represents the return value or the thrown exception that the function may eventually provide.
+                </blockquote>
+                <a href="http://documentup.com/kriskowal/q/#">http://documentup.com/kriskowal/q/#</a>
+            </section>
+
+            <section>
+                <h3>Beispiel</h3>
+<pre><code>// Asynchron
+asyncFn(function (err, result) {
+    asyncFn(function (err, result) {
+        asyncFn(function (err, result) {
+
+        });
+    });
+});
+</code></pre>
+<pre class="fragment"><code>// Promise
+promiseFn()
+    .then(promiseFn)
+    .then(promiseFn)
+    .then(promiseFn)
+</code></pre>
+            </section>
+
+            <section>
+                <h3>Spezifikation</h3>
+                <p>
+                    <a href="http://promises-aplus.github.io/promises-spec/">Promises/A+</a>
+                </p>
+                <ul>
+                    <li class="fragment">Ein <code>Promise</code> ist ein Objekt, das eine <code>then()</code>-Methode bereitstellt</li>
+                    <li class="fragment">Ein <code>Promise</code> kann "resolved" oder "rejected" werden</li>
+                    <li class="fragment"><code>resolve</code> ist das Äquivalent zu <code>return</code>, rejected zu <code>throw</code></li>
+                    <li class="fragment">Die <code>then()</code>-Methode akzeptiert zwei Listener:
+                        <ul>
+                            <li><code>onFulfilled</code></li>
+                            <li><code>onRejected</code></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Spezifikation</h3>
+                <p>
+                    <a href="http://promises-aplus.github.io/promises-spec/">Promises/A+</a>
+                </p>
+<pre><code>var promise = promiseFn();
+
+promise.then(ok, fail);
+
+function ok(result) { ... }
+function fail(error) { ... }
+</code></pre>
+            </section>
+
+            <section>
+                <h3>Beispiel</h3>
+                <p>
+                    Wir möchten <code>fs.readFile()</code> so umbauen, dass es ein Promise zurückgibt.
+                    Als Promise-Lib verwenden wir <code>q</code>
+                </p>
+<pre class="fragment"><code>function readFile(file, options) {
+    var deferred = Q.defer();
+
+    fs.readFile(file, options, function onFileRead(err, data) {
+        if (err) {
+            deferred.reject(err);
+        } else {
+            deferred.resolve(data);
+        }
+    });
+
+    return deferred.promise;
+}</code></pre>
+<pre class="fragment"><code>readFile("someFile.txt", { encoding: "utf8" })
+    .then(function (data) {
+        console.log(data);
+    });</code></pre>
+            </section>
+
+            <section>
+                <p>Oder einfach...</p>
+<pre><code>Q.nfcall(fs.readFile, "someFile.txt", { encoding: "utf8" })
+    .then(function (data) {
+        console.log(data);
+    });</code></pre>
+            </section>
+
+            <section>
+                <h3>Achtung: Namensverwirrung</h3>
+                <p>
+                    Promises werden manchmal auch Deferred, Futures oder Thenables genannt. Es gibt verschiedene Implementierungen
+                    mit jeweils kleinen Unterschieden. Generell aber gilt:
+                </p>
+            </section>
+
+            <section>
+                <p>
+                    Ein <b>Promise</b> wird nach "nach außen" abgegeben. Es ermöglicht nur das Ausführen von Funktionen, wenn ein bestimmter
+                    Zustand eingetreten ist. Der Zustand selber kann nicht beeinflusst werden.
+                </p>
+
+<pre><code>var promise = readFile("someFile.txt", { encoding: "utf8" });
+
+promise.then(ok, fail);</code></pre>
+
+            </section>
+
+            <section>
+                <p>
+                    Ein <b>Deferred</b> ist ein Hilfs-Objekt, das üblicherweise nicht nach außen gegeben werden sollte. Über
+                    ein Deferred kann der Zustand eines Promises beeinflusst werden.
+                </p>
+
+<pre><code>function readFile(filename, options) {
+    var deferred = Q.defer();
+
+    ...
+
+    if (err) {
+        deferred.reject(err);
+    } else {
+        deferred.resolve(data);
+    }
+
+    ...
+}</code></pre>
+            </section>
+
+            <section>
+                <h3>Bekannte Promise/Deferred-Implementierungen</h3>
+                <ul>
+                    <li><a href="http://api.jquery.com/category/deferred-object/">jQuery.Deferred()</a></li>
+                    <li><a href="https://github.com/kriskowal/q">q</a></li>
+                    <li><a href="https://github.com/cujojs/when">when</a></li>
+                    <li><a href="https://github.com/kriszyp/promised-io">promised-io</a></li>
+                    <li><a href="https://github.com/wookiehangover/underscore.Deferred">underscore.Deferred</a></li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Wenn node Promises verwenden würde...</h3>
+                <p>
+                    Beispiel: Wir möchten eine Funktion <code>readFiles()</code> schreiben, die ein Array von Dateien akzeptiert, diese asynchron
+                    einliest und die jeweiligen Inhalte gesammelt als Array zurückgibt.
+                </p>
+            </section>
+            <section>
+                <p>
+                    Ohne Promises
+                </p>
+<pre><code>function readFiles(files, callback) {
+    var allData = [],
+        pending = files.length;
+
+    files.forEach(function (file) {
+        fs.readFile(file, function onFileRead(err, data) {
+            if (err) {
+                callback(err);
+            }
+            pending--;
+            done(file, data);
+        });
+    });
+
+    function done(file, data) {
+        allData.push(data);
+        if (pending === 0) {
+            callback(null, allData);
+        }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <p>
+                    Mit Promises
+                </p>
+<pre><code>function readFiles(files) {
+    return Q.all(files.map(fs.readFile));
+}</code></pre>
+            </section>
+        </section>
+    </div>
+
+</div>
+
+<script src="../../assets/reveal.js/lib/js/head.min.js"></script>
+<script src="../../assets/reveal.js/js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            { src: '../../assets/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            { src: '../../assets/reveal.js/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../assets/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../assets/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            { src: '../../assets/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+            { src: '../../assets/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+            // { src: '../../assets/reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+            // { src: '../../assets/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+    });
+
+</script>
+
+</body>
+</html>
