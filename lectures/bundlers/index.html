@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Webentwicklung mit node.js - Client-side Bundlers</title>
+
+    <meta name="author" content="peerigon">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../assets/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="../../assets/reveal.js/css/theme/sky.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="../../assets/reveal.js/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write( '<link rel="stylesheet" href="../../assets/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <style type="text/css">
+        .reveal section .no-border {
+            background: transparent;
+            border: 0;
+            box-shadow: 0 0 0;
+        }
+
+        .reveal h2 {
+            line-height: 1.2em;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            text-rendering: optimizeLegibility;
+        }
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="../../assets/reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <small style="padding: 10px;">
+        Webentwicklung mit node.js<br/>
+        HS Augsburg
+    </small>
+
+    <small style="padding: 10px; float: right; text-align: right;">
+        Client-side Bundlers<br/>4.12.2013
+    </small>
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+
+        <section>
+            <h2>Client-side Bundlers</h2>
+            <p>
+                Bundler. It is better for you to not know what it is.
+            </p>
+        </section>
+
+        <section>
+<pre><code>// a.js
+var b = require("./b");
+b.stuff("It works");</code></pre>
+<pre><code>// b.js
+exports.stuff = function(text) {
+console.log(text);
+}</code></pre>
+
+            <div class="fragment">
+                <p style="text-align: center;">
+                    ... wird zu ...
+                </p>
+<pre><code>// bundle.js
+({
+"./a.js": function(module, exports, require) {
+var b = require("./b.js");
+b.stuff("It works");
+},
+"./b.js": function(module, exports, require) {
+exports.stuff = function(text) {
+console.log(text)
+}})</code></pre>
+            </div>
+        </section>
+
+        <section>
+            <h3>Limitierungen</h3>
+            <ul>
+                <li class="fragment">Keine C-Libs</li>
+                <li class="fragment">Keine Betriebssystem-spezifischen Module (z.B. <code>fs</code>)</li>
+                <li class="fragment">Kein dynamisches <code>require()</code>
+<pre><code>var modulePath = "path/to/module.js";
+
+require(modulePath);</code></pre>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Bundlers</h3>
+            <p>
+                <a href="https://github.com/substack/node-browserify">
+                    <img src="img/browserify_logo.png" class="no-border" style="width: 400px;">
+                </a>
+                <a href="https://github.com/webpack/webpack">
+                    <img src="img/webpack_logo.png" class="no-border" style="width: 400px;">
+                </a>
+                <a href="https://github.com/medikoo/modules-webmake">webmake</a>
+            </p>
+        </section>
+
+
+    </div>
+
+</div>
+
+<script src="../../assets/reveal.js/lib/js/head.min.js"></script>
+<script src="../../assets/reveal.js/js/reveal.min.js"></script>
+
+<script>
+
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            { src: '../../assets/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            { src: '../../assets/reveal.js/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../assets/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../assets/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            { src: '../../assets/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+            { src: '../../assets/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+            // { src: '../../assets/reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+            // { src: '../../assets/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+    });
+
+</script>
+
+</body>
+</html>

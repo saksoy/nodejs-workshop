@@ -15,7 +15,10 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
 - 13.11. __Projekt Einteilung__
 - 20.11. [Datenbanken](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/datenbanken/)
 - 27.11. [Error-Handling / Flow-Control](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/error-handling-flow-control/)
-- 04.12. Best-Practice
+- 04.12.
+  - [Debugging](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/debugging/)
+  - [Init-Modules](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/init-modules)
+  - [Bundlers](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/bundlers)
 - 11.12. Test-Driven-Development
 - 18.12. _Projekt-Support_
 - 08.01  __Projekt-Abgabe__

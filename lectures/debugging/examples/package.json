@@ -1,0 +1,6 @@
+{
+    "name": "debugging-example",
+    "devDependencies": {
+        "chai": "*"
+    }
+}
