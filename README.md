@@ -21,10 +21,10 @@ Skripte & Beispiele zur Vorlesung [Web-Entwicklung mit Node.js](http://www.hs-au
   - [Bundlers](http://hsa-nodejs-workshop.github.io/nodejs-workshop/lectures/bundlers)
 - 11.12. _Projekt-Support_
 - 18.12. _Projekt-Support_
-- 08.01. (Mi) Test-Driven-Development
+- 08.01. _Projekt-Support_
 - 10.01. 23:59 (Fr) __Projekt-Abgabe__
 - 15.01.  __Projekt-Kurzpräsentation__
-- 22.01. frei! yeeha!
+- 22.01. Test-Driven-Development?
 
 ## Aufgaben
 
